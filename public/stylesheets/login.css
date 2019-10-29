@@ -160,10 +160,11 @@ textarea {
   width: 100%;
 }
 
-.forgot {
+.forgot, .guest {
   margin-top: -20px;
   text-align: right;
 }
+
 #header
 {
   margin-top: -15px;
