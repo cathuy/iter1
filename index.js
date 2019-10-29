@@ -22,21 +22,21 @@ app.set('view engine', 'ejs');
 
 // link to main page
 app.get('/', function(req, res) {
-  res.render('main.ejs');
+  res.render('index.ejs');
 });
 
 //insert users info into database
 app.post('/', (req,res) => {
-  
-  
+
+
 });
 //login
 app.post('/login',(req,res)=>{
   name = JSON.parse(JSON.stringify(req.body))['NAMW']
   password = JSON.parse(JSON.stringify(req.body))['PASSWORD']
-  
-  
-  
+
+
+
 });
 //insert users info into database
 app.post('/Creat',(req,res)=>{
@@ -53,7 +53,7 @@ app.post('/Creat',(req,res)=>{
             res.render('main.ejs')
         }
     });
-  
+
 });
 //link to user page (display user info)
 app.get('/users', function(req,res) {
@@ -65,9 +65,9 @@ app.get('/users', function(req,res) {
     res.render('/users.ejs',results)
 
 	});
-   
+
 });
-  
+
   //login to the system and redirect to home page
   app.post('/login',function(request, response){
     var username = request.body.username;
@@ -92,7 +92,7 @@ app.get('/users', function(req,res) {
       }
   });
 
-  
+
 
 // server
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
