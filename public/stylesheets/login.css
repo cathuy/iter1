@@ -308,11 +308,7 @@ a {
   font-size: 13px;
 }
 
-.line-trough {
-  text-decoration: line-through;
-}
-
-.page .fas {
+.page .fas.fa-home.fa-3x, .page .fas.fa-user-secret.fa-3x {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -334,7 +330,7 @@ a {
   -o-transition: all .5s cubic-bezier(.25, 1, .5, 1.25);
 }
 
-.page#p1 .fas {
+.page#p1 .fas.fa-home {
   height: 220px;
   transform: translateX(10%) !important;
 }
