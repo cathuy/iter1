@@ -27,8 +27,8 @@ const io = require('socket.io')(server);
 
 });
   
-const INDEX = path.join(__dirname, 'public/index.html');
-app.use((req, res) => res.sendFile(INDEX) );
+// const INDEX = path.join(__dirname, 'public/index.html');
+// app.use((req, res) => res.sendFile(INDEX) );
  
 var pool;
 pool = new Pool({
