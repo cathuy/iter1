@@ -10,8 +10,7 @@ const server = app.listen(PORT, () => {
     console.log("Listening on port: " + PORT);
 });
 const io = require('socket.io')(server);
-const INDEX = path.join(__dirname, 'chatRoom.html');
-app.use((req, res) => res.sendFile(INDEX) );
+
 var pool;
 pool = new Pool({
     connectionString: 'postgres://postgres:129409Zydayy@localhost/PLAYER'
@@ -22,6 +21,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+const INDEX = path.join(__dirname, 'public/chatRoom.html');
+app.use((req, res) => res.sendFile(INDEX) );
 
  
  io.on('connection', (socket) => {
@@ -35,6 +36,10 @@ app.set('view engine', 'ejs');
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
  
+
+
+
+
 
 
 //user login action
