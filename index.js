@@ -10,8 +10,19 @@ const server = app.listen(PORT, () => {
     console.log("Listening on port: " + PORT);
 });
 const io = require('socket.io')(server);
+var pool;
+pool = new Pool({
+    connectionString: 'postgres://postgres:129409Zydayy@localhost/PLAYER'
+});
+pool.connect();
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.get('/', (req, res) => { res.render('pages/index') });
 
- io.sockets.on('connection', function(socket) {
+io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {
         socket.username = username;
         io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
@@ -26,21 +37,8 @@ const io = require('socket.io')(server);
     });
 
 });
-  
-// const INDEX = path.join(__dirname, 'public/index.html');
-// app.use((req, res) => res.sendFile(INDEX) );
- 
-var pool;
-pool = new Pool({
-    connectionString: 'postgres://postgres:129409Zydayy@localhost/PLAYER'
-});
-pool.connect();
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.get('/', (req, res) => { res.render('pages/index') });
+
+
 
 //user login action
 app.post('/login_action', (req, res) => {
@@ -57,6 +55,8 @@ app.post('/login_action', (req, res) => {
         res.render('pages/index')
     });
 });
+
+
 //user sign up
 app.post('/signup_action', (req, res) => {
     params = JSON.parse(JSON.stringify(req.body))
