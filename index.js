@@ -2,15 +2,10 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 const bodyParser = require("body-parser");
 const { Pool } = require('pg');
- 
-
-const server = app.listen(PORT, () => {
-    console.log("Listening on port: " + PORT);
-});
-const io = require('socket.io')(server);
-
 var pool;
 pool = new Pool({
     connectionString: 'postgres://postgres:129409Zydayy@localhost/PLAYER'
@@ -22,24 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => { res.render('pages/index') });
-
- 
- io.on('connection', (socket) => {
-
-  console.log('Client connected');
-
-  socket.on('disconnect', () => console.log('Client disconnected'));
-
-});
-
-
-setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
- 
-
-
-
-
-
 
 //user login action
 app.post('/login_action', (req, res) => {
@@ -56,8 +33,6 @@ app.post('/login_action', (req, res) => {
         res.render('pages/index')
     });
 });
-
-
 //user sign up
 app.post('/signup_action', (req, res) => {
     params = JSON.parse(JSON.stringify(req.body))
@@ -84,4 +59,4 @@ app.post('/signup_action', (req, res) => {
 
 
 
- 
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
