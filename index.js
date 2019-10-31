@@ -4,11 +4,12 @@ const PORT = process.env.PORT || 5000
 var app = express();
 const bodyParser = require("body-parser");
 const { Pool } = require('pg');
-const socketIO = require('socket.io');
-const INDEX = path.join(__dirname, 'public/index.html');
-app.use((req, res) => res.sendFile(INDEX) );
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
-const io = socketIO(app);
+ 
+
+const server = app.listen(PORT, () => {
+    console.log("Listening on port: " + PORT);
+});
+const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
 
@@ -19,6 +20,9 @@ io.on('connection', (socket) => {
 });
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
   
+const INDEX = path.join(__dirname, 'public/index.html');
+app.use((req, res) => res.sendFile(INDEX) );
+ 
 var pool;
 pool = new Pool({
     connectionString: 'postgres://postgres:129409Zydayy@localhost/PLAYER'
