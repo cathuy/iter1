@@ -2,10 +2,23 @@ const express = require('express')
 const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express();
-// const http = require('http').Server(app);
-// const io = require('socket.io')(http);
 const bodyParser = require("body-parser");
 const { Pool } = require('pg');
+const socketIO = require('socket.io');
+const INDEX = path.join(__dirname, 'public/index.html');
+app.use((req, res) => res.sendFile(INDEX) );
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+const io = socketIO(app);
+
+io.on('connection', (socket) => {
+
+  console.log('Client connected');
+
+  socket.on('disconnect', () => console.log('Client disconnected'));
+
+});
+setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+  
 var pool;
 pool = new Pool({
     connectionString: 'postgres://postgres:129409Zydayy@localhost/PLAYER'
@@ -59,4 +72,4 @@ app.post('/signup_action', (req, res) => {
 
 
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+ 
