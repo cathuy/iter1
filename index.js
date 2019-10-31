@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => { res.render('pages/index') });
-app.get('/login', (req, res) => { res.render('pages/login') });
+
 //user login action
 app.post('/login_action', (req, res) => {
     params = JSON.parse(JSON.stringify(req.body))
@@ -30,7 +30,7 @@ app.post('/login_action', (req, res) => {
             res.end(error);
         }
         console.log("this user is in our database");
-        res.render('/#t3')
+        res.render('pages/index')
     });
 });
 //user sign up
@@ -38,6 +38,7 @@ app.post('/signup_action', (req, res) => {
     params = JSON.parse(JSON.stringify(req.body))
     NAME = params['name']
     PASSWORD = params['password']
+    console.log(PASSWORD)
     confirm_ps = params['enter_password_again']
     var Twins = 0
     var Total_games = 0
@@ -50,7 +51,7 @@ app.post('/signup_action', (req, res) => {
                 res.redirect('/');
             } else {
                 console.log("success to sign up")
-                res.render('/')
+                res.redirect('../#t3')
             }
         });
     } else { console.log("please enter password again") }
