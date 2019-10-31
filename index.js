@@ -20,8 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.get('/', (req, res) => { res.render('pages/chatRoom') });
-
+app.get('/', (req, res) => { res.render('pages/chatRoom.ejs') });
+ 
 io.sockets.on('connection', function(socket) {
     socket.on('username', function(username) {
         socket.username = username;
