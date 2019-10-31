@@ -22,22 +22,20 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => { res.render('pages/index') });
  
-io.sockets.on('connection', function(socket) {
-    socket.on('username', function(username) {
-        socket.username = username;
-        io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
-    });
+ const io = socketIO(server);
 
-    socket.on('disconnect', function(username) {
-        io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
-    })
 
-    socket.on('chat_message', function(message) {
-        io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-    });
+io.on('connection', (socket) => {
+
+  console.log('Client connected');
+
+  socket.on('disconnect', () => console.log('Client disconnected'));
 
 });
 
+
+setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+ 
 
 
 //user login action
