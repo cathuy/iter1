@@ -20,7 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.get('/', (req, res) => { res.render('pages/index') });
+
+app.get('/', (req, res) => { res.render('pages/chatRoom') });
  
  io.on('connection', (socket) => {
 
@@ -29,8 +30,6 @@ app.get('/', (req, res) => { res.render('pages/index') });
   socket.on('disconnect', () => console.log('Client disconnected'));
 
 });
-
-
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
  
