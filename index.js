@@ -22,16 +22,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.get('/', (req, res) => { res.render('pages/index') });
  
- const io = socketIO(server);
-
-
-io.on('connection', (socket) => {
+ io.on('connection', (socket) => {
 
   console.log('Client connected');
 
   socket.on('disconnect', () => console.log('Client disconnected'));
 
 });
+
 
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
