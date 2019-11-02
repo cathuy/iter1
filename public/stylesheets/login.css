@@ -51,7 +51,7 @@ body {
   display: block;
   text-decoration: none;
   padding: 15px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.2);
   font-size: 20px;
   float: left;
   width: 50%;
@@ -66,8 +66,7 @@ body {
 }
 
 .tab-group .active a {
-  background: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background: #fff;
 }
 
 .tab-content > div:last-child {
@@ -100,7 +99,7 @@ label .req {
 label.active {
   -webkit-transform: translateY(2px);
           transform: translateY(2px);
-  top: 28px;
+  top: 34px;
   left: 46px;
   font-size: 12px;
 }
@@ -118,10 +117,10 @@ input {
   display: inline-block;
   width: 80%;
   height: 100%;
-  padding: 2px;
+  padding: 4px;
   background: none;
   background-image: none;
-  border: solid 1px #1f1b24;
+  border: solid 1.6px #1f1b24;
   color: #ffffff;
   border-radius: 2px;
   transition: border-color .25s ease, box-shadow .25s ease;
