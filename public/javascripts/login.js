@@ -1,3 +1,4 @@
+// p3 input label transition
 $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
   var $this = $(this),
@@ -27,6 +28,37 @@ $('.form').find('input, textarea').on('keyup blur focus', function (e) {
 
 });
 
+// p2 input label transition
+$('.form_join').find('input, textarea').on('keyup blur focus', function (e) {
+
+  var $this = $(this),
+      label = $this.prev('label');
+
+	  if (e.type === 'keyup') {
+			if ($this.val() === '') {
+          label.removeClass('active highlight');
+        } else {
+          label.addClass('active highlight');
+        }
+    } else if (e.type === 'blur') {
+    	if( $this.val() === '' ) {
+    		label.removeClass('active highlight');
+			} else {
+		    label.removeClass('highlight');
+			}
+    } else if (e.type === 'focus') {
+
+      if( $this.val() === '' ) {
+    		label.removeClass('highlight');
+			}
+      else if( $this.val() !== '' ) {
+		    label.addClass('highlight');
+			}
+    }
+
+});
+
+// p3 button switch
 $('.tab a').on('click', function (e) {
 
   e.preventDefault();
@@ -37,6 +69,22 @@ $('.tab a').on('click', function (e) {
   target = $(this).attr('href');
 
   $('.tab-content > div').not(target).hide();
+
+  $(target).fadeIn(600);
+
+});
+
+// p2 button switch
+$('.tab a').on('click', function (e) {
+
+  e.preventDefault();
+
+  $(this).parent().addClass('active');
+  $(this).parent().siblings().removeClass('active');
+
+  target = $(this).attr('href');
+
+  $('.room-content > div').not(target).hide();
 
   $(target).fadeIn(600);
 

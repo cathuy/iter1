@@ -58,16 +58,45 @@
                                 </span>
 
                                 <!-- start game buttons -->
-                                <ul class="room-group">
-                                    <li class="tab"><a class="sl_button" href="#join">Join an Existing Room</a></li>
-                                    <li class="tab"><a class="sl_button" href="#create">Create a New Room</a></li>
-                                </ul>
+
+                                <section class="form_join">
+                                    <ul class="room-group">
+                                        <li class="tab active"><a class="sl_button" href="#join">Join an Existing Room</a></li>
+                                        <li class="tab"><a class="sl_button" href="#create">Create a New Room</a></li>
+                                    </ul>
+
+                                    <div class="room-content">
+
+                                        <!-- join an existing room -->
+                                        <div  id="join">
+                                            <form action="" method="">
+                                                <div class="field-wrap">
+                                                    <label class="jc">#yourCode<span class="req">*</span></label>
+                                                    <input class="jc" name="room-code" required autocomplete="off" />
+                                                </div>
+                                                <button type="submit" class="join_button">Enter room with the code</button>
+                                                
+                                            </form>
+                                            <button class="join_button">I don't have a code</button>
+                                        </div>
+
+                                        <div  id="create">
+                                            <div class="field-wrap2">
+                                                create a public room to play with other players online. 
+                                                create a private room to play with your friends only :)
+                                            </div>
+                                                
+                                            <button class="join_button">Create a Public Room</button>
+                                            <button class="join_button">Create a Private Room</button>
+                                        </div>
+
+                                    </div>
+                                </section>
 
                             </section>
                         </div>
-                    
 
-                        <!-- login/sign up subpage-->
+                        <!-- login/sign up subpage -->
                         <div class="page" id="p3">
 
                             <section class="form">
@@ -75,7 +104,7 @@
                                 <!-- sign up / login switch buttons -->
                                 <ul class="tab-group">
                                     <li class="tab active"><a class="sl_button" href="#signup">Sign Up</a></li>
-                                    <li class="tab active"><a class="sl_button" href="#login">Log In</a></li>
+                                    <li class="tab"><a class="sl_button" href="#login">Log In</a></li>
                                 </ul>
 
                                 <div class="tab-content">
@@ -84,16 +113,16 @@
                                     <div id="signup">
                                         <form action="/signup_action" method="POST">
                                             <div class="field-wrap">
-                                                <label>Username<span class="req">*</span></label>
-                                                <input name="name" required autocomplete="off" />
+                                                <label class="sl">Username<span class="req">*</span></label>
+                                                <input class="sl" name="name" required autocomplete="off" />
                                             </div>
                                             <div class="field-wrap">
-                                                <label>Set A Password<span class="req">*</span></label>
-                                                <input name="password" type="password" required autocomplete="off" />
+                                                <label class="sl">Set A Password<span class="req">*</span></label>
+                                                <input class="sl" name="password" type="password" required autocomplete="off" />
                                             </div>
                                             <div class="field-wrap">
-                                                <label>Enter Password Again<span class="req">*</span></label>
-                                                <input name="enter_password_again" type="password" required autocomplete="off" />
+                                                <label class="sl">Enter Password Again<span class="req">*</span></label>
+                                                <input class="sl" name="enter_password_again" type="password" required autocomplete="off" />
                                             </div>
                                             <button type="submit" class="button button-block">SIGN UP</button>
                                         </form>
@@ -104,12 +133,12 @@
                                         <h1>Welcome Back!</h1>
                                         <form action="/login_action" method="POST">
                                             <div class="field-wrap">
-                                                <label>Username<span class="req">*</span></label>
-                                                <input name="name" required autocomplete="off" />
+                                                <label class="sl">Username<span class="req">*</span></label>
+                                                <input class="sl" name="name" required autocomplete="off" />
                                             </div>
                                             <div class="field-wrap">
-                                                <label>Password<span class="req">*</span></label>
-                                                <input name="password" type="password" required autocomplete="off" />
+                                                <label class="sl">Password<span class="req">*</span></label>
+                                                <input class="sl" name="password" type="password" required autocomplete="off" />
                                             </div>
                                             <button class="button button-block">Log In</button>
                                         </form>
