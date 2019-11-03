@@ -9,9 +9,9 @@ comprehension skills. It is a fun online game suitable for parties where players
 their friends. It is also suitable for any individual who wishes to play anonymously with other
 online players.
 
-### Assignment URL
+### Game App URL
 
-Game app link: [Click here](url here)
+Link: [Click here](paste url here)
 
 ### Game Rules
 
