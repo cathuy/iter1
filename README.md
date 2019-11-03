@@ -1,4 +1,4 @@
-# iter1# Who Is the Spy
+# Who Is the Spy
 
 Fall 2019 Simon Fraser University CMPT276 Group Project
 
