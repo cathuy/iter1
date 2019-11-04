@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin</title>
+</head>
+<body>
+        <table>
+                <tr>
+                    <th>User_Name</th>
+                    <th>Password</th>
+                    <th>Total_wins</th>
+                    <th>Total_games</th>
+                    <th>Time</th>
+                    <th>Result</th>
+                    <th>Word</th> 
+                    <th>Spy</th>
+                </tr>
+                <% rows.forEach((r) => { %>
+                    <tr>
+                        <td>
+                            <%= r. username %>
+                        </td>
+                        <td>
+                            <%= r.password %>
+                        </td>
+                        <td>
+                            <%= r.total_wins %>
+                        </td>
+                        <td>
+                            <%= r.total_games %>
+                        </td>
+                        <td>
+                            <%= r.time %>
+                        </td>
+                        <td>
+                            <%= r.result %>
+                        </td>
+                        <td>
+                          <%= r.word %> 
+                        </td>
+                        <td>
+                           <%= r.spy %>
+                        </td>
+            
+                    </tr>
+            
+                    <% }); %>
+            </table>
+</body>
+</html>
