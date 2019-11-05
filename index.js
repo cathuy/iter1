@@ -118,7 +118,7 @@ app.post('/signup_action', (req, res) => {
                 res.send(err)
             } else {
                 console.log("success to sign up")
-                res.redirect('../#t3')
+                res.redirect('../#t4')
             }
         });
     } else { console.log("please enter password again") }

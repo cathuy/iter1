@@ -257,17 +257,19 @@ input.sl:focus, input.jc:focus {
   left: 0;
 }
 
-#p2, #p3 {
+#p2, #p3, #p4 {
   left: 200%;
 }
 
 #p1 { background: #121212; }
 #p2 { background: #121212; }
 #p3 { background: #121212; }
+#p4 { background: #121212; }
 
 /* bringing in subpages */
 #t2:target #p2,
-#t3:target #p3 {
+#t3:target #p3,
+#t4:target #p4 {
   transform: translateX(-190%);
   -webkit-transform: translateX(-190%);
   -moz-transform: translateX(-190%);
@@ -275,16 +277,19 @@ input.sl:focus, input.jc:focus {
   transition-delay: .4s !important;
 } 
 
-#t2:target #p1, 
-#t3:target #p1 {
+#t2:target #p1,
+#t3:target #p1, 
+#t4:target #p1 {
   background: #1f1b24;
 }
 
 /* blurring #p1 when entering other subpages */
 #t2:target #p1 .fas,
 #t3:target #p1 .fas,
+#t4:target #p1 .fas,
 #t2:target footer,
-#t3:target footer {
+#t3:target footer,
+#t4:target footer {
   -webkit-filter: blur(3px);
 }
 
@@ -304,7 +309,8 @@ ul .fas:hover {
 
 /* nav bar icon transitions */
 #t2:target ul .fas,
-#t3:target ul .fas {
+#t3:target ul .fas,
+#t4:target ul .fas {
   transform: scale(.6);
   -webkit-transform: scale(.6);
   -moz-transform: scale(.6);
@@ -312,8 +318,9 @@ ul .fas:hover {
   transition-delay: .25s;
 }
 
-#t2:target #dos,
-#t3:target #tres {
+#t2:target #info,
+#t3:target #game,
+#t4:target #user {
   transform: scale(1.2) !important;
   -webkit-transform: scale(1.2) !important;
   -moz-transform: scale(1.2) !important;
@@ -327,7 +334,7 @@ ul .fas:hover {
   bottom: 0;
   left: 0;
   margin: auto;
-  height: 280px;
+  height: 420px;
   width: 10%;
   padding: 0;
   text-align: center;
@@ -357,7 +364,7 @@ ul .fas:hover {
   font-size: 13px;
 }
 
-.hint.p2 {
+.hint.p3 {
   width: 60%;
   margin: auto;
   height: 80px;
@@ -373,7 +380,7 @@ ul .fas:hover {
 }
 
 footer {
-  bottom: 0;
+  bottom: 50px;
   right: 5%;
   left: 0;
   position: absolute;
@@ -385,6 +392,7 @@ footer {
   padding-bottom: 80px;
 }
 
+.page .fas.fa-info-circle.fa-3x,
 .page .fas.fa-home.fa-3x,
 .page .fas.fa-user-secret.fa-3x {
   position: absolute;
@@ -411,6 +419,11 @@ footer {
 .page .fas.fa-home.fa-3x {
   width: 270px;
   height: 170px;
+}
+
+.page .fas.fa-info-circle.fa-3x {
+  width: 400px;
+  height: 580px;
 }
 
 .page .fas.fa-user-secret.fa-3x {
@@ -450,7 +463,8 @@ footer {
 
 #t2:target .page#p2 .fas,
 #t3:target .page#p3 .fas,
-#t3:target .page#p3 .form {
+#t4:target .page#p4 .fas,
+#t4:target .page#p4 .form {
   transform: translateX(0) !important;
   -webkit-transform: translateX(0) !important;
   -moz-transform: translateX(0) !important;
