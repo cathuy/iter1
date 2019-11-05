@@ -1,6 +1,7 @@
 # Who Is the Spy
 
-Fall 2019 Simon Fraser University CMPT276 Group Project
+Fall 2019 Simon Fraser University 
+CMPT276 Group Project
 
 ## Overview
 
@@ -11,7 +12,7 @@ online players.
 
 ### Game App URL
 
-Link: [Click here](paste url here)
+Link: [Click here](https://enigmatic-sea-96290.herokuapp.com)
 
 ### Game Rules
 
