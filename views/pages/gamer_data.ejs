@@ -8,12 +8,29 @@
         <title>Who Is the Spy - Logged In</title>
         <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-        <link rel="stylesheet" href="/stylesheets/login.css" type="text/css">
-        <script src="https://kit.fontawesome.com/f5c362f8f5.js" crossorigin="anonymous"></script>
-
+        <link rel="stylesheet" href="/stylesheets/login.css" type="text/css">                       <!-- main styles -->
+        <link rel="stylesheet" href="/stylesheets/sweetalert.css" type="text/css">                  <!-- alert box styles -->
+        <script src="https://kit.fontawesome.com/f5c362f8f5.js" crossorigin="anonymous"></script>   <!-- icons -->
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>                 <!-- alert box -->
     </head>
 
     <body>
+
+        <!-- login alert -->
+        <script>
+            function test(){
+                swal({
+                    className: 'swal-login',
+                    title: "Your are now logged in!",
+                    text: "Play a game and your record will be saved:)",
+                    button: false,
+                    timer: 3000,
+                });  
+            };
+
+            test();
+              
+        </script>
 
         <!-- nav bar div -->
         <div class="ct" id="t1">
@@ -167,6 +184,9 @@
                                     
                                             <% }); %>
                                     </table>
+
+                                    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+                                    <script src="/javascripts/login.js"></script>
 
                                 </section>    
                                 

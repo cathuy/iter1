@@ -1,0 +1,19 @@
+/* styles for alert boxes */
+
+.swal-login {
+    width: 350px;
+    background-color: #1f1b24;
+}
+
+.swal-overlay, .swal-alert {
+    background-color: rgba(12, 11, 14, 0.85);
+}
+
+.swal-text {
+    color: #fff;
+}
+
+.swal-title {
+    font-size: 18px;
+    color: #fff;
+}
