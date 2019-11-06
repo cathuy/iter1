@@ -1,54 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Player Info</title>
-</head>
-<body>
-        <table>
-                <tr>
-                    <th>User_Name</th>
-                    <th>Password</th>
-                    <th>Total_wins</th>
-                    <th>Total_games</th>
-                    <th>Time</th>
-                    <th>Result</th>
-                    <th>Word</th> 
-                    <th>Spy</th>
-                </tr>
-                <% rows.forEach((r) => { %>
-                    <tr>
-                        <td>
-                            <%= r. username %>
-                        </td>
-                        <td>
-                            <%= r.password %>
-                        </td>
-                        <td>
-                            <%= r.total_wins %>
-                        </td>
-                        <td>
-                            <%= r.total_games %>
-                        </td>
-                        <td>
-                            <%= r.time %>
-                        </td>
-                        <td>
-                            <%= r.result %>
-                        </td>
-                        <td>
-                            <%= r.word %>
-                        </td>
-                        <td>
-                            <%= r.spy %>
-                        </td>
-            
-                    </tr>
-            
-                    <% }); %>
-            </table>
-   </div>
-</body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Who Is the Spy - Logged In</title>
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet" href="/stylesheets/login.css" type="text/css">
+        <script src="https://kit.fontawesome.com/f5c362f8f5.js" crossorigin="anonymous"></script>
+
+    </head>
+
+    <body>
+
+        <!-- nav bar div -->
+        <div class="ct" id="t1">
+            <div class="ct" id="t2">
+                <div class="ct" id="t3">
+                    <div class="ct" id="t4">
+                        <div class="ct" id="t5">
+                            <ul id="menu">
+                                <a href="#t1" class="menu_button">
+                                    <li class="fas fa-home" id="home"></li>
+                                </a><br><br>
+                                <a href="#t2" class="menu_button">
+                                    <li class="fas fa-info-circle" id="info"></li>
+                                </a><br><br>
+                                <a href="#t3" class="menu_button">
+                                    <li class="fas fa-user-secret" id="game"></li>
+                                </a><br><br>
+                                <a href="#t4" class="menu_button">
+                                    <li class="fas fa-user-circle" id="user"></li>
+                                </a><br><br>
+                            </ul>
+
+                            <!-- home subpage -->
+                            <div class="page" id="p1">
+                                <section class="fas fa-home fa-3x"><span class="title">Who Is The Spy</span>
+                                    <span class="hint">
+                                        A fun game for parties.<br>
+                                        A fun game for you.<br>
+                                    </span>
+                                </section>
+
+                                <footer>
+                                    Click <i class="fas fa-user-secret fa-lg"></i> on the left to start a game <br>
+                                    Click <i class="fas fa-info-circle fa-lg"></i> on the left to view game rules <br>
+                                    Click <i class="fas fa-user-circle fa-lg"></i> on the left to view your game record
+                                </footer>
+                            </div>
+                            
+                            <!-- info subpage -->
+                            <div class="page" id="p2">
+                                <section class="fas fa-info-circle fa-3x"><span class="title">How to Play</span>
+                                    <span class="hint">
+                                        In a game room of 7 players, 6 people are presented the same word whereas the remaining person (the spy) gets a different one but is related to it. 
+                                        <br><br>
+                                        The game consists of several rounds. In each round, every player is given 30 seconds to describe their words in one sentence without mentioning the word directly. 
+                                        <br><br>
+                                        At the end of each round, after everyone has put down their descriptions, all people vote for the person who is suspected of being a spy. 
+                                        The person who got the most votes will be kicked out of the game (but can choose to remain in the room to watch the rest of the game). 
+                                        <br><br>
+                                        If the spy is voted out, then the game is over and the rest of the players win; if the spy is not voted out and there are 4 or more players left, 
+                                        then the game continues to the next round. If there are only 3 players left in the round, including the spy, then the game is over and the spy wins.
+                                        <br><br>
+                                        The purpose of describing keywords is to make others think that you are holding the same word.  
+                                    </span>
+                                </section>
+
+                            </div>
+
+                            <!-- start game subpage -->
+                            <div class="page" id="p3">
+                                <section class="fas fa-user-secret fa-3x">
+                                    <span class="title">Start a game</span>
+                                    <span class="hint p2">
+                                        Here you can choose to either join an existing game, 
+                                        or create a new game room to play with your friends!
+                                    </span>
+
+                                    <!-- start game buttons -->
+
+                                    <section class="form_join">
+                                        <ul class="room-group">
+                                            <li class="tab active"><a class="sl_button" href="#join">Join an Existing Room</a></li>
+                                            <li class="tab"><a class="sl_button" href="#create">Create a New Room</a></li>
+                                        </ul>
+
+                                        <div class="room-content">
+
+                                            <!-- join an existing room -->
+                                            <div  id="join">
+                                                <form action="" method="">
+                                                    <div class="field-wrap">
+                                                        <label class="jc">#yourCode<span class="req">*</span></label>
+                                                        <input class="jc" name="room-code" required autocomplete="off" />
+                                                    </div>
+                                                    <button type="submit" class="join_button">Enter room with the code</button>
+                                                    
+                                                </form>
+                                                <button class="join_button">I don't have a code</button>
+                                            </div>
+
+                                            <div  id="create">
+                                                <div class="field-wrap2">
+                                                    create a public room to play with other players online. 
+                                                    create a private room to play with your friends only :)
+                                                </div>
+                                                
+                                                <button class="join_button">Create a Public Room</button>
+                                                <button class="join_button">Create a Private Room</button>
+                                            </div>
+
+                                        </div>
+                                    </section>
+
+                                </section>
+                            </div>
+
+                            <!-- login/sign up subpage -->
+                            <div class="page" id="p4">
+
+                                <section class="fas fa-user-circle fa-3x">
+
+                                    <table>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Password</th>
+                                            <th>Total wins</th>
+                                            <th>Total games</th>
+                                            <th>Time</th>
+                                            <th>Result</th>
+                                            <th>Word</th> 
+                                            <th>Spy</th>
+                                        </tr>
+                                        <% rows.forEach((r) => { %>
+                                            <tr>
+                                                <td>
+                                                    <%= r. username %>
+                                                </td>
+                                                <td>
+                                                    <%= r.password %>
+                                                </td>
+                                                <td>
+                                                    <%= r.total_wins %>
+                                                </td>
+                                                <td>
+                                                    <%= r.total_games %>
+                                                </td>
+                                                <td>
+                                                    <%= r.time %>
+                                                </td>
+                                                <td>
+                                                    <%= r.result %>
+                                                </td>
+                                                <td>
+                                                    <%= r.word %>
+                                                </td>
+                                                <td>
+                                                    <%= r.spy %>
+                                                </td>
+                                    
+                                            </tr>
+                                    
+                                            <% }); %>
+                                    </table>
+
+                                </section>    
+                                
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </body>
+
 </html>
+
+
+
