@@ -394,7 +394,8 @@ footer {
 
 .page .fas.fa-info-circle.fa-3x,
 .page .fas.fa-home.fa-3x,
-.page .fas.fa-user-secret.fa-3x {
+.page .fas.fa-user-secret.fa-3x,
+.page .fas.fa-user-circle.fa-3x {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -416,6 +417,7 @@ footer {
   -o-transition: all .5s cubic-bezier(.25, 1, .5, 1.25);
 }
 
+/* setting height and width for each subpage */
 .page .fas.fa-home.fa-3x {
   width: 270px;
   height: 170px;
@@ -429,6 +431,11 @@ footer {
 .page .fas.fa-user-secret.fa-3x {
   width: 400px;
   height: 650px;
+}
+
+.page .fas.fa-user-circle.fa-3x {
+  top: 200px;
+  height: auto;
 }
 
 .page .form, .page .form_join {
@@ -470,5 +477,28 @@ footer {
   -moz-transform: translateX(0) !important;
   -o-transform: translateX(0) !important;
   transition-delay: 1s;
+}
+
+/* player and admin record table  */
+table {
+  margin: 0 auto;
+  width: 800px;
+}
+
+table, tr {
+  border: 2px solid #413a4b;
+  border-collapse: collapse;
+}
+
+tr, td, th {
+  text-align: center;
+  font-size: 14px;
+  padding: 10px;
+  height: 35px;
+  color: #FEFFFF; 
+}
+
+th {
+  background-color: #413a4b;
 }
 
