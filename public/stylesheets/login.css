@@ -216,6 +216,36 @@ input.sl:focus, input.jc:focus {
   cursor: pointer;
 }
 
+/* logout button */
+.logout_button {
+  text-align: center;
+  border: 0;
+  outline: none;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  background-color: #413a4b;
+  color: #ffffff;
+  transition: all 0.5s ease;
+  -webkit-appearance: none;
+  cursor: pointer;
+  bottom: 50px;
+  /* right: 19%; */
+  /* left: 0; */
+  /* position: absolute; */
+  margin: 0;
+  width: 100px;
+}
+
+.logout_button:hover, .logout_button:focus {
+  background: #cacaca;
+  color: #1f1b24;
+}
+
+/* join button */
 .join_button {
   text-align: center;
   border: 0;
