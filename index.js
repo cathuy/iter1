@@ -105,3 +105,8 @@ app.post('/signup_action', (req, res) => {
         });
     } else { console.log("please enter password again") }
 });
+
+//user log out
+app.post('/logout_action', (req, res) => {
+    res.render('pages/index');
+});
