@@ -6,9 +6,38 @@
     <title>Who Is the Spy</title>
     <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="/stylesheets/login.css" type="text/css">
-    <script src="https://kit.fontawesome.com/f5c362f8f5.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/stylesheets/login.css" type="text/css">                       <!-- main styles -->
+    <link rel="stylesheet" href="/stylesheets/sweetalert.css" type="text/css">                  <!-- alert box styles -->
+    <script src="https://kit.fontawesome.com/f5c362f8f5.js" crossorigin="anonymous"></script>   <!-- icons -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>                 <!-- alert box -->
 
+
+    <script>
+
+        function not_match(){
+            swal({
+                className: 'swal-login',
+                title: "OOPS!",
+                text: "Password did not match.\nPlease try again!",
+                button: "Got it!",
+            });  
+        };
+
+        // function for checking if both passwords match
+        function checkPassword(form) {
+            password1 = form.password.value;
+            password2 = form.enter_password_again.value;
+
+            if (password1 != password2) {
+                not_match();
+                return false;
+            } else {
+                return true;
+            }
+        };
+
+
+    </script>
 </head>
 
 <body>
@@ -133,7 +162,7 @@
 
                                     <!-- sign up form -->
                                     <div id="signup">
-                                        <form action="/signup_action" method="POST">
+                                        <form onSubmit="return checkPassword(this)" action="/signup_action" method="POST">
                                             <div class="field-wrap">
                                                 <label class="sl">Username<span class="req">*</span></label>
                                                 <input class="sl" name="name" required autocomplete="off" />
