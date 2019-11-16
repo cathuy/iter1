@@ -1,58 +1,128 @@
 <!DOCTYPE html>
-
 <html lang="en">
-  <head>
 
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width,initial-scale = 1.0">
     <title>CHAT ROOM</title>
+    <meta name="description" content="Learn how to use Web Share API with conditional AddThis Sharing Buttons">
+    <link rel="stylesheet" href="/stylesheets/chatRoom.css" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <button id="shareButton" onclick="share(this)">
+    <i class="fas fa-share-alt"></i>
+    <i class="fas fa-times"></i>
+    <div class="container">
+      <div class="addthis_inline_share_toolbox"></div>
+      
+      <!--for old users of AddThis-->
+      <div class="addthis_sharing_toolbox"></div>
+    </div>
+  </button>
 
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { background-color: #000; font: 13px Helvetica, Arial; color:#fff; }
-      form { background: #fff; padding: 3px; position: fixed; bottom: 0; width: 100%; border-color: #000; border-top-style: solid; border-top-width: 1px;}
-      form input { border-style: solid; border-width: 1px; padding: 10px; width: 85%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; margin-left: 2%; }
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages li { padding: 5px 10px; }
-      #messages li:nth-child(odd) { background: #eee; }
-    </style>
 
-    <script src="https://kit.fontawesome.com/f5c362f8f5.js"; crossorigin="anonymous"></script>
 
-  </head>
 
-  <body>
+
 
     <p id='server-time'></p>
     <p id='message_display'></p>
 
     <form class="" action="javascript:void(0)">
-      <input type="text" id="message_input" name="" value="" required autofocus><button>Send</button>
+        <input type="text" id="message_input" name="" value="" required autofocus><button>Send</button>
     </form>
 
     <script src="/socket.io/socket.io.js"></script>;
     <script>
+        var socket = io();
+        var el = document.getElementById('server-time');
+        var dis = document.getElementById('message_display');
+        socket.on('time', function(timeString) {
+            el.innerHTML = 'Server time: ' + timeString;
+        });
+        socket.on('message', function(msg) {
+            dis.innerHTML += `${name} Message: ${msg} <br />`;
+        });
+        document.forms[0].onsubmit = function() {
+            var input = document.getElementById("message_input");
+            var msg = input.value;
+            socket.emit("chat", msg);
+            input.value = '';
+        }
 
-      var socket = io();
-      var el = document.getElementById('server-time');
-      var dis=document.getElementById('message_display');
+        var AddThisJSLoaded = false; //AddThis not loaded yet
+        var clickedOnShare = false; //share button is not clicked
 
-      socket.on('time',function(timeString){
-        el.innerHTML='Server time: '+ timeString;
-      });
+        //replace with your publisher ID
+        //it's in your profile setting
+        var AddThisPubID = "ra-5b056b31a239b6eb";
+        var AddThisJS =
+            "//s7.addthis.com/js/300/addthis_widget.js#pubid=" + AddThisPubID;
 
-      socket.on('message',function(msg){
-        dis.innerHTML+=`${name} Message: ${msg} <br />`;
-      });
+        function share(button) {
+            if (navigator.share) {
+                //check if Web Share API is supported by the browser
+                var url = document.location.href;
+                var title = document.getElementsByTagName("title")[0].innerHTML;
+                var description = document
+                    .querySelector("meta[name=description]")
+                    .getAttribute("content");
 
-      document.forms[0].onsubmit=function(){
-        var input=document.getElementById("message_input");
-        var msg=input.value;
-        socket.emit("chat",msg);
-        input.value='';
-      }
+                navigator.share({
+                    title: title,
+                    text: description,
+                    url: url
+                });
+            } else {
+                if (!AddThisJSLoaded && !clickedOnShare) {
+                    //when AddThis not loaded and share button isn't clicked
+                    clickedOnShare = true; //share button is clicked
+                    showLoading(button);
+                    shareByAddThis(button);
+                } else {
+                    toggleAddThisButtons(button);
+                }
+            }
+        }
 
+        function shareByAddThis(button) {
+            var script = document.createElement("script");
+            script.async = true;
+            script.src = AddThisJS;
+
+            script.onload = function() {
+                clickedOnShare = false; //AddThis JS is loaded
+                addthis.user.ready(function(data) {
+                    AddThisJSLoaded = true; //AddThis loaded and ready to use
+                    hideLoading(button);
+                    showAddThisButtons(button);
+                });
+            };
+
+            script.onerror = function() {
+                clickedOnShare = false; //AddThis JS failed to load
+                hideLoading(button);
+            };
+
+            document.body.appendChild(script);
+        }
+
+        function showLoading(button) {
+            button.classList.add("loading");
+        }
+
+        function hideLoading(button) {
+            button.classList.remove("loading");
+        }
+
+        function showAddThisButtons(button) {
+            button.classList.add("showAddThisButtons");
+        }
+
+        function toggleAddThisButtons(button) {
+            button.classList.toggle("showAddThisButtons");
+        }
     </script>
-
-  </body>
 
 </html>
