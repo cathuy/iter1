@@ -63,7 +63,6 @@
         function share(button) {
             if (navigator.share) {
                 //check if Web Share API is supported by the browser
-                url: 'https://murmuring-castle-23474.herokuapp.com/#t3'
                 var title = document.getElementsByTagName("title")[0].innerHTML;
                 var description = document
                     .querySelector("meta[name=description]")
@@ -72,10 +71,9 @@
                 navigator.share({
                     title: title,
                     text: description,
-                    url: url
+                    url: 'https://murmuring-castle-23474.herokuapp.com/#t3'
                 });
-            }
-            else {
+            } else {
                 if (!AddThisJSLoaded && !clickedOnShare) {
                     //when AddThis not loaded and share button isn't clicked
                     clickedOnShare = true; //share button is clicked
