@@ -62,15 +62,9 @@
 
         function share(button) {
             if (navigator.share) {
-                //check if Web Share API is supported by the browser
-                var title = document.getElementsByTagName("title")[0].innerHTML;
-                var description = document
-                    .querySelector("meta[name=description]")
-                    .getAttribute("content");
-
                 navigator.share({
-                    title: title,
-                    text: description,
+                    title: "chat_room",
+                    text: "12345",
                     url: "https://murmuring-castle-23474.herokuapp.com/#t3"
                 });
             } else {
