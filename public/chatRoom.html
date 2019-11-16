@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width = device-width,initial-scale = 1.0">
     <title>CHAT ROOM</title>
-    <meta name="description" content="Learn how to use Web Share API with conditional AddThis Sharing Buttons">
+    <meta name="description" content="12345">
     <link rel="stylesheet" href="/stylesheets/chatRoom.css" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <button id="shareButton" onclick="share(this)">
@@ -63,7 +63,7 @@
         function share(button) {
             if (navigator.share) {
                 //check if Web Share API is supported by the browser
-                var url = document.location.href;
+                url: 'https://murmuring-castle-23474.herokuapp.com/#t3'
                 var title = document.getElementsByTagName("title")[0].innerHTML;
                 var description = document
                     .querySelector("meta[name=description]")
@@ -74,7 +74,8 @@
                     text: description,
                     url: url
                 });
-            } else {
+            }
+            else {
                 if (!AddThisJSLoaded && !clickedOnShare) {
                     //when AddThis not loaded and share button isn't clicked
                     clickedOnShare = true; //share button is clicked
