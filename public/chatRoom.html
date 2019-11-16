@@ -62,10 +62,13 @@
 
         function share(button) {
             if (navigator.share) {
+                var description = document
+                    .querySelector("meta[name=description]")
+                    .getAttribute("content");
                 navigator.share({
                     title: "chat_room",
-                    text: "12345",
-                    url: "https://murmuring-castle-23474.herokuapp.com/#t3",
+                    text: description,
+                    url: "https://murmuring-castle-23474.herokuapp.com/#t3"
                 });
             } else {
                 if (!AddThisJSLoaded && !clickedOnShare) {
