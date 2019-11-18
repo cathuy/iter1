@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>CHAT ROOM</title>
-  <meta name="viewport" content="width = device-width,initial-scale = 1.0">
   <meta name="description" content="This is your room number">
   <link rel="stylesheet" href="/stylesheets/chatRoom.css" type="text/css">  
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
@@ -17,27 +16,26 @@
 <!-- share API Reference from: https://www.youtube.com/watch?v=sMJZqLLp0Cc-->
  
  <button id="shareButton" onclick="share(this)">
-    <i class="fas fa-share-alt"></i>
-     <i class="fas fa-times"></i>
+  <i class="fas fa-share-alt"></i>
+  <i class="fas fa-times"></i>
   <div class="container">
-    <div class="addthis_inline_share_toolbox">
-</div>
+    <div class="addthis_inline_share_toolbox"></div>
     
     <!--for old users of AddThis-->
    <div class="addthis_sharing_toolbox"></div>
   </div>
 </button> 
-    <form action="/logout_action" method="POST">
-        <button type="submit" id="logoutbutton">Log out</button>
-    </form>
+
+
 
        <!-- chatRoom -->
        <p id='server-time'></p>
-       <p id='message_display'></p>    
+      <p id='message_display'></p>
+  
       <form class="" action="javascript:void(0)">
         <input type="text" id="message_input" name="" value="" required autofocus><button>Send</button>
       </form>
-    
+      
       <script src="/socket.io/socket.io.js"></script>;
       <script>
         var socket = io();
@@ -58,12 +56,12 @@
 
     
     //share API
-    var AddThisJSLoaded = false; //AddThis not loaded yet
+   var AddThisJSLoaded = false; //AddThis not loaded yet
     var clickedOnShare = false; //share button is not clicked
     var AddThisPubID = "ra-5dd0449a0cd80efa";
     var AddThisJS = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dd0449a0cd80efa";
 
-  function share(button) {
+function share(button) {
   if (navigator.share) {
     //check if Web Share API is supported by the browser
     //var url = document.location.href;
@@ -74,8 +72,7 @@
     navigator.share({
       title: title,
       text: description,
-      url: "https://stark-chamber-06109.herokuapp.com/logout_action#t4"
-
+      url:"https://stark-chamber-06109.herokuapp.com/#t4",
     });
   } else {
     if (!AddThisJSLoaded && !clickedOnShare) {
@@ -128,6 +125,11 @@ function toggleAddThisButtons(button) {
 } 
 
 </script>
+
+<form action="/logout_action" method="POST">
+  <button id="logoutbutton">Log
+  out</button>
+</form>
 
 </body>
 </html>
