@@ -30,6 +30,7 @@
 </button>
 
 
+
     <!-- chatRoom -->
     <p id='server-time'></p>
     <p id='message_display'></p>
@@ -128,24 +129,29 @@
 
 
         //word generater API
-        var data = null;
+        var url1 = "https://api.wordnik.com/v4/word.json/";
+        var word = "rainbow";
+        var url2 = "/relatedWords?useCanonical=false&relationshipTypes=equivalent&limitPerRelationshipType=1&api_key=YOURAPIKEY";
+        var link;
 
-        var xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
+        // function setup() {
+        //     noCanvas();
+        //     link = createA('#', word);
+        // }
 
-        xhr.addEventListener("readystatechange", function() {
-            if (this.readyState === this.DONE) {
-                console.log(this.responseText);
-            }
-        });
+        function askWordnik() {
+            loadJSON(url1 + word + url2, gotData);
+        }
 
-        xhr.open("GET", "https://wordsapiv1.p.rapidapi.com/words/bloody/similarTo");
-        xhr.setRequestHeader("x-rapidapi-host", "wordsapiv1.p.rapidapi.com");
-        xhr.setRequestHeader("x-rapidapi-key", "09c9259ed2msh2532d70a42ac283p101077jsna06eca500c50");
-
-        xhr.send(data);
-        console.log(data);
+        function gotData(data) {
+            println(data[0].words[0]);
+            console.log(data[0].words[0])
+        }
     </script>
+    <!-- wordGenerator button -->
+    <button id="wordGenerator" onclick="gotData(word)">
+
+    </button>
 
 </body>
 
