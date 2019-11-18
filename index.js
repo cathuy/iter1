@@ -151,11 +151,11 @@ app.post('/signup_action', (req, res) => {
 });
 
 //user enter chatroom
-app.post('/chatRoom', (req, res, err) => {
+app.post('/chatRoom.html', (req, res, err) => {
     if (!req.session.user)
         res.render('pages/index')
     else
-        res.render('pages/chatRoom')
+        res.sendFile(__dirname + "/public/" + "chatRoom.html");
 })
 
 //user log out
