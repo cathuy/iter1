@@ -6,31 +6,28 @@
     <title>Who Is the Spy</title>
     <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="/stylesheets/login.css" type="text/css">
-    <!-- main styles -->
-    <link rel="stylesheet" href="/stylesheets/sweetalert.css" type="text/css">
-    <!-- alert box styles -->
-    <script src="https://kit.fontawesome.com/f5c362f8f5.js" crossorigin="anonymous"></script>
-    <!-- icons -->
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <!-- alert box -->
+    <link rel="stylesheet" href="/stylesheets/login.css" type="text/css">                       <!-- main styles -->
+    <link rel="stylesheet" href="/stylesheets/sweetalert.css" type="text/css">                  <!-- alert box styles -->
+    <script src="https://kit.fontawesome.com/f5c362f8f5.js" crossorigin="anonymous"></script>   <!-- icons -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>                 <!-- alert box -->
 
 
     <script>
-        function not_match() {
+
+          
+function not_match(){
             swal({
                 className: 'swal-login',
                 title: "OOPS!",
                 text: "Password did not match.\nPlease try again!",
                 button: "Got it!",
-            });
+            });  
         };
-
+     
         // function for checking if both passwords match
         function checkPassword(form) {
             password1 = form.password.value;
             password2 = form.enter_password_again.value;
-
             if (password1 != password2) {
                 not_match();
                 return false;
@@ -38,11 +35,11 @@
                 return true;
             }
         };
+         
     </script>
 </head>
 
 <body>
-
     <!-- nav bar div -->
     <div class="ct" id="t1">
         <div class="ct" id="t2">
@@ -74,11 +71,12 @@
                             </section>
 
                             <footer>
-                                Click <i class="fas fa-user-secret fa-lg"></i> on the left to start a game <br> Click <i class="fas fa-info-circle fa-lg"></i> on the left to view game rules <br> Click <i class="fas fa-user-circle fa-lg"></i> on the left
-                                to log in or sign up
+                                Click <i class="fas fa-user-secret fa-lg"></i> on the left to start a game <br>
+                                Click <i class="fas fa-info-circle fa-lg"></i> on the left to view game rules <br>
+                                Click <i class="fas fa-user-circle fa-lg"></i> on the left to log in or sign up
                             </footer>
                         </div>
-
+                        
                         <!-- info subpage -->
                         <div class="page" id="p2">
                             <section class="fas fa-info-circle fa-3x"><span class="title">How to Play</span>
@@ -119,25 +117,29 @@
                                     <div class="room-content">
 
                                         <!-- join an existing room -->
-                                        <div id="join">
-                                            <form action="/join_room" method="POST">
+                                        <div  id="join">
+                                            <form action="/chatRoom.html" method="POST">
                                                 <div class="field-wrap">
                                                     <label class="jc">#yourCode<span class="req">*</span></label>
                                                     <input class="jc" name="room-code" required autocomplete="off" />
                                                 </div>
-                                                <button type="submit" class="join_button">Enter room with the code</button>
-
-                                            </form>
-                                            <button class="join_button">I don't have a code</button>
+                                                <button class="join_button">Enter room with the code</button>
+                            
+                                                <button class="join_button">I don't have a code</button> 
+                                         </form>
                                         </div>
 
-                                        <div id="create">
+                                        <div  id="create">
                                             <div class="field-wrap2">
-                                                create a public room to play with other players online. create a private room to play with your friends only :)
+                                                create a public room to play with other players online. 
+                                                create a private room to play with your friends only :)
                                             </div>
-
+                                            <form action="/chatRoom.html" method="POST">
                                             <button class="join_button">Create a Public Room</button>
-                                            <button class="join_button">Create a Private Room</button>
+                                           </form>
+                                           <form action="/chatRoom.html" method="POST">
+                                             <button class="join_button">Create a Private Room</button>
+                                         </form>
                                         </div>
 
                                     </div>
@@ -150,7 +152,7 @@
                         <div class="page" id="p4">
 
                             <section class="form">
-
+                                
                                 <!-- sign up / login switch buttons -->
                                 <ul class="tab-group">
                                     <li class="tab active"><a class="sl_button" href="#signup">Sign Up</a></li>
@@ -200,7 +202,7 @@
                                 <script src="/javascripts/login.js"></script>
 
                             </section>
-
+                            
                         </div>
 
                     </div>
