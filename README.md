@@ -12,7 +12,7 @@ online players.
 
 ### Game App URL
 
-Link: [Click here](https://enigmatic-sea-96290.herokuapp.com)
+Current Link: [Click here](https://murmuring-castle-23474.herokuapp.com)
 
 ### Game Rules
 
@@ -20,12 +20,11 @@ In a game room of 7 players, 6 people are presented the same word whereas the re
 
 ### Scope and Features
 
-* **Log in/Sign Up** - Users can either choose to play anonymously or create a login to save their game
-history. User login only requires a unique username and a password. When a user is logged in, he/she is presented with game history, which includes the words they received, the result (win or lose), as well as the total time spent in each of the past games.
+* **Log in/Sign Up** - Users are required to sign up in order to proceed to the game. User signup only requires a unique username and a password. 
 
-* **Create a game room** - On the main page, a user can either start a game by creating a room or joining an existing one. If a user creates a room, he/she will be presented with two buttons of whether making this room public or private.
+* **Create a game room** - On the main page, a user can either start a game by creating a room or joining an existing one. If 
 
-* **Join a game room** - On the main page, a user can either start a game by creating a room or joining an existing one. If a user joins a room, he/she can choose to either enter a room code or to enter a random room.
+* **Join a game room** - A user can join a game room by entering a unique room code.
 
 * **Room code sharing** - In each room, there will be a room code on the top of the page. There will be a button
 that allows users to share the code instantly via messenger, text messages, … etc
