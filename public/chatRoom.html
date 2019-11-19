@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>CHAT ROOM</title>
+<<<<<<< HEAD
   <meta name="viewport" content="width = device-width,initial-scale = 1.0">
   <meta name="description" content="This is your room number">
   <link rel="stylesheet" href="/stylesheets/chatRoom.css" type="text/css">  
@@ -13,6 +14,11 @@
    <script src="/socket.io/socket.io.js"></script>
    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+=======
+  <meta name="description" content="This is your room number">
+  <link rel="stylesheet" href="/stylesheets/chatRoom.css" type="text/css">  
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+>>>>>>> 3eda79cca6bd77c815f9d0a7f5e40988a0157b2f
 </head>
 <body>  
 
@@ -34,17 +40,22 @@
 
 
        <!-- chatRoom -->
+<<<<<<< HEAD
       <p id='server-time'></p>
       <p class="roomcode"></p>
       <br>
       <p class='user_list'></p>
       <br>
       <p class='user_span'></p>
+=======
+       <p id='server-time'></p>
+>>>>>>> 3eda79cca6bd77c815f9d0a7f5e40988a0157b2f
       <p id='message_display'></p>
   
       <form class="" action="javascript:void(0)">
         <input type="text" id="message_input" name="" value="" required autofocus><button>Send</button>
       </form>
+<<<<<<< HEAD
 
       <script>
           // Number of users online in current room
@@ -142,6 +153,26 @@
               $(".user_list").html(num_users + " people online in this room");
             }
           });
+=======
+      
+      <script src="/socket.io/socket.io.js"></script>;
+      <script>
+        var socket = io();
+        var el = document.getElementById('server-time');
+        var dis=document.getElementById('message_display');
+        socket.on('time',function(timeString){
+          el.innerHTML='Server time: '+ timeString;
+        });
+        socket.on('message',function(msg){
+          dis.innerHTML+=`${name} Message: ${msg} <br />`;
+        });
+        document.forms[0].onsubmit=function(){
+          var input=document.getElementById("message_input");
+          var msg=input.value;
+          socket.emit("chat",msg);
+          input.value='';
+        } 
+>>>>>>> 3eda79cca6bd77c815f9d0a7f5e40988a0157b2f
 
     
     //share API

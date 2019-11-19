@@ -34,9 +34,12 @@ app.get('/', (req, res) => {
     if (req.session.user) {
         console.log('user already logged in')
         res.render('pages/index')
+<<<<<<< HEAD
             //res.send("<script>alert('welcome come back');location.href='/';</script>")
 
 
+=======
+>>>>>>> 3eda79cca6bd77c815f9d0a7f5e40988a0157b2f
     } else {
         console.log('user not log in yet')
         console.log(randomWords());
@@ -44,21 +47,7 @@ app.get('/', (req, res) => {
         res.render('pages/index')
     }
 });
-// app.get('/#t4', (req, res) => {
-//     if (req.session.user) {
-//         if (req.session.user == 'carinaA') {
-//             var getWhole = `SELECT * FROM Admin`;
-//             pool.query(getWhole, (error, result) => {
-//                 if (error)
-//                     res.end(error);
-//                 var results = { 'rows': result.rows };
-//                 console.log(results);
-//                 res.render('pages/admin_data', results)
-//             });
 
-//         }
-//     }
-// });
 const server = app.listen(PORT, () => {
     console.log("Listening on port: " + PORT);
 });
@@ -189,6 +178,7 @@ app.get('/chatRoom.html/:roomName/', function(req, res) {
 });
 
 
+
 //user login action
 
 app.post('/login_action', (req, res) => {
@@ -208,25 +198,25 @@ app.post('/login_action', (req, res) => {
             req.session.password = PASSWORD;
             res.render('pages/admin_data', results)
         });
-    } else {
-        pool.query(getInfoQuery, (error, result) => {
-            if (error) {
-                console.log(`this user is not existed`)
-                response.send('Incorrect Username and/or Password!');
-                res.end(error);
-            }
-            console.log("this user is in our database");
-            var Results //Admin
-            req.session.user = NAME;
-            req.session.password = PASSWORD;
-            var results = { 'rows': result.rows };
-            console.log(results)
-            res.render('pages/gamer_data', results)
-        });
-
     }
+    else{
+    pool.query(getInfoQuery, (error, result) => {
+        if (error) {
+            console.log(`this user is not existed`)
+            response.send('Incorrect Username and/or Password!');
+            res.end(error);
+        }
+        console.log("this user is in our database");
+        var Results     //Admin
+        req.session.user = NAME;
+        req.session.password = PASSWORD;
+        var results = { 'rows': result.rows };
+        console.log(results)
+        res.render('pages/gamer_data',results)
+    });
+    
+}
 });
-
 
 //user sign up
 app.post('/signup_action', (req, res) => {
@@ -241,7 +231,7 @@ app.post('/signup_action', (req, res) => {
     var RESULT = 0
     var SPY = 0
     var WORD = NaN
-
+     
     if (PASSWORD == confirm_ps) {
         insertQuery = `INSERT INTO Admin("username", "password","total_wins", "total_games")
         VALUES( '${NAME}' , '${PASSWORD}', ${Twins} , ${Total_games})`
@@ -249,31 +239,43 @@ app.post('/signup_action', (req, res) => {
             if (err) {
                 console.log("fail to sign up")
                 res.send("<script>alert('Please use another names!');location.href='../#t4';</script>")
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3eda79cca6bd77c815f9d0a7f5e40988a0157b2f
             } else {
-                insertQuery2 = `INSERT INTO game_info("username","time","result","word","spy") 
+                insertQuery2=`INSERT INTO game_info("username","time","result","word","spy") 
                 VALUES('${NAME}','${TIME}',${RESULT},'${WORD}',${SPY})`
-                pool.query(insertQuery2, function(err, result, fields) {
-                    if (err) {
-                        console.log("fail to insert to game_info")
-                        res.send(err)
-                    } else {
-                        console.log("success to sign up")
-                        res.redirect('../#t4')
-                    }
-                });
-
+              pool.query(insertQuery2,function(err,result,fields){
+                  if(err){
+                    console.log("fail to insert to game_info")
+                    res.send(err)
+                  }
+                  else{
+                      console.log("success to sign up")
+                     res.redirect('../#t4')
+                  }
+              });
+                
             }
         });
     } else { console.log("please enter password again") }
 });
 
+<<<<<<< HEAD
 //user enter chatroom
 app.post('/chatRoom.html', (req, res, err) => {
     if (!req.session.user)
         res.send("<script>alert('Please login!');location.href='../#t4';</script>")
     else
         res.sendFile(__dirname + "/public/" + "chatRoom.html")
+=======
+app.post('/chatRoom.html',(req,res,err)=>{
+    if(!req.session.user)
+        res.send("<script>alert('Please login!');location.href='../#t4';</script>")
+    else
+        res.sendFile(__dirname+"/public/"+"chatRoom.html")
+>>>>>>> 3eda79cca6bd77c815f9d0a7f5e40988a0157b2f
 })
 
 
@@ -286,43 +288,3 @@ app.post('/logout_action', (req, res) => {
     console.log("sucessful log out");
     res.render('pages/index');
 });
-
-
-//user enter room code to join an existing room
-// app.post('/join_room',(req,res) =>{
-//     params = JSON.parse(JSON.stringify(req.body))
-//     code = params['roomid']
-//     var getRoomQuery = `SELECT * FROM gameroom WHERE "roomid" =  ${code}`
-//     va
-//     pool.query(getRoomQuery, (error, result) => {
-//         if (error) {
-//             console.log(`the code is not exist`)
-//             response.send('Incorrect code!');
-//             res.end(error);
-//         }
-//         console.log("correctly code");
-//         var count = 1;
-//         var rows = result.rows;
-//         rows.forEach((r)=> {
-//             r.numberofplay++;  
-//             var privates = r.private;
-//             count++;
-//         });
-//         var insertGamerQuery = `INSERT INTO gametable("roomid", "gamername","private", "numberofplayer")
-//         VALUES( ${code} , '${name}', ${privates} , ${count})`
-//         pool.query(insertGamerQuery, function(err, fields) {
-//             if (err) {
-//                 console.log("fail add to gamer table")
-//                 // res.redirect('/');
-//                 res.send(err)
-//             } else {
-//                 console.log("success to enter game room")
-//                 res.redirect('')
-//             }
-//         });
-//     } else { console.log("please enter password again") }
-
-//     });
-
-
-// });
