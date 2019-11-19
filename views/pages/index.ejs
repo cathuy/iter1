@@ -120,24 +120,28 @@
 
                                         <!-- join an existing room -->
                                         <div id="join">
-                                            <form action="/join_room" method="POST">
-                                                <div class="field-wrap">
-                                                    <label class="jc">#yourCode<span class="req">*</span></label>
-                                                    <input class="jc" name="room-code" required autocomplete="off" />
-                                                </div>
-                                                <button type="submit" class="join_button">Enter room with the code</button>
 
+                                            <div class="field-wrap">
+                                                <label class="jc">#yourCode<span class="req">*</span></label>
+                                                <input class="jc" name="room-code" required autocomplete="off" />
+                                            </div>
+                                            <form action="/chatRoom.html" method="POST">
+                                                <button type="submit" class="join_button">Enter room with the code</button>
                                             </form>
-                                            <button class="join_button">I don't have a code</button>
+
+                                            <!-- <button class="join_button">I don't have a code</button> -->
                                         </div>
 
                                         <div id="create">
                                             <div class="field-wrap2">
                                                 create a public room to play with other players online. create a private room to play with your friends only :)
                                             </div>
-
-                                            <button class="join_button">Create a Public Room</button>
-                                            <button class="join_button">Create a Private Room</button>
+                                            <form action="/chatRoom.html" method="POST">
+                                                <button class="join_button">Create a Public Room</button>
+                                            </form>
+                                            <form action="/chatRoom.html" method="POST">
+                                                <button class="join_button">Create a Private Room</button>
+                                            </form>
                                         </div>
 
                                     </div>
@@ -198,6 +202,7 @@
 
                                 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
                                 <script src="/javascripts/login.js"></script>
+
 
                             </section>
 

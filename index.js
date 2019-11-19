@@ -1,4 +1,5 @@
 const express = require('express')
+var randomWords = require('random-words');
 const app = express()
 const session = require('express-session');
 const path = require('path')
@@ -28,13 +29,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 app.get('/', (req, res) => {
     if (req.session.user) {
-        console.log('welcome' + req.session.user + 'come back');
+        console.log('user already logged in')
         res.render('pages/index')
+            //res.send("<script>alert('welcome come back');location.href='/';</script>")
+
 
     } else {
         console.log('user not log in yet')
+        console.log(randomWords());
+
         res.render('pages/index')
     }
 });
@@ -59,17 +65,128 @@ const server = app.listen(PORT, () => {
 
 const io = require('socket.io')(server);
 
-
+// store user data in variable room
+var rooms = []
+    //Socket.io on connection event
 io.on('connection', (socket) => {
-    console.log('Client connected');
-    socket.on('disconnect', () => console.log('Client disconnected'));
-    socket.on('chat', function(message) {
-        console.log("chat message: " + message);
-        io.emit('message', message);
+
+    if (socket.user === undefined || socket.room === undefined) {
+        io.to(socket.user).emit("giveuser");
+    }
+
+    //User disconnect event listener.
+    socket.on('disconnect', function() {
+        /*  Code:
+                Remove user from socket.
+                Search user in it's room and remove it from user array of the room.
+                If room is empty, remove the room.
+        */
+        socket.leave(socket.room);
+        var user_idx = -1;
+
+        //Check if user room is lost. Common cause: Server restart. 
+        if (rooms[socket.room] != undefined) {
+            for (var i = 0; i < rooms[socket.room].user_array.length; i++) {
+                if (rooms[socket.room].user_array[i][0] === socket.user) {
+                    //Find user in user array. O(length)
+                    user_idx = i;
+                    break;
+                }
+            }
+
+            //Remove user from user_array.
+            rooms[socket.room].user_array.splice(user_idx, 1);
+
+            if (rooms[socket.room].user_array.length === 0) {
+                delete rooms[socket.room];
+            }
+
+            //Update people online for other users.
+            io.sockets.in(socket.room).emit('user_disconnect', socket.user);
+            console.log(socket.user + " disconnected.");
+
+        } else {
+            console.log("Probable Server Restart. Disconnecting user to reconnect. user: %s room: %s", socket.user, socket.room);
+        }
     });
+    // adding user to room
+    socket.on('addToRoom', function(roomName) {
+        /*  Code:
+                Add user to room.
+                Add custom property .user .room to socket for later identification.
+                Search if room exists. Add user.
+        */
+
+        socket.room = roomName.room;
+        socket.user = roomName.user;
+
+        var flag = 0; //NOTE: No race conditions observed now
+
+        for (var key in rooms) {
+            if (key === socket.room) {
+                flag = 1;
+                break;
+            }
+        }
+
+        if (flag === 0) {
+            rooms[socket.room] = {
+                name: socket.room,
+                user_array: []
+            }
+            rooms[socket.room].user_array.push([socket.user]);
+        } else {
+            rooms[socket.room].user_array.push([socket.user]);
+        }
+
+        //Add socket to provided room
+        socket.join(socket.room);
+
+        //Send user_connect msg to other users in room.
+        io.sockets.in(socket.room).emit('user_connect', rooms[socket.room].user_array);
+
+        //Send the current user it's server socket.id to use as peerjs id. Ensures uniqueness on custom server.
+        // io.to(socket.id).emit('socket_id',socket.id);
+
+        console.log(socket.user + " connected.");
+    });
+
+    //Broadcast users message to its room.
+    socket.on('chat', function(msg) {
+
+        // sending to all clients in 'game' room, including sender
+        io.in(socket.room).emit('chat', { "user": socket.user, "msg": msg });
+
+        // socket.broadcast.to(socket.room).emit('chat',{"user":socket.user,"msg":msg});
+        // io.emit('chat',{"user":socket.user,"msg":msg});
+        console.log(socket.user + ": " + msg + ". From room# " + socket.room);
+    });
+
 });
 
+// socket.on('chat message', function(msg){
+//     var keys = Object.keys(socket.rooms);
+//     for (var i = 0; i < keys.length; i++) {
+//         io.to(socket.rooms[keys[i]]).emit('chat message', msg);
+//     }
+// });
+
+
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
+//Get Room id from url
+app.get('/chatRoom.html/:roomName', function(req, res) {
+
+    activeChat = req.params.roomName;
+    res.sendFile(__dirname + "/public/" + "chatRoom.html");
+
+});
+
+app.get('/chatRoom.html/:roomName/', function(req, res) {
+
+    activeChat = req.params.roomName;
+    res.sendFile(__dirname + "/public/" + "chatRoom.html");
+
+});
 
 
 //user login action
@@ -131,7 +248,8 @@ app.post('/signup_action', (req, res) => {
         pool.query(insertQuery, function(err, result, fields) {
             if (err) {
                 console.log("fail to sign up")
-                res.send(err)
+                res.send("<script>alert('Please use another names!');location.href='../#t4';</script>")
+
             } else {
                 insertQuery2 = `INSERT INTO game_info("username","time","result","word","spy") 
                 VALUES('${NAME}','${TIME}',${RESULT},'${WORD}',${SPY})`
@@ -153,10 +271,12 @@ app.post('/signup_action', (req, res) => {
 //user enter chatroom
 app.post('/chatRoom.html', (req, res, err) => {
     if (!req.session.user)
-        res.render('pages/index')
+        res.send("<script>alert('Please login!');location.href='../#t4';</script>")
     else
-        res.sendFile(__dirname + "/public/" + "chatRoom.html");
+        res.sendFile(__dirname + "/public/" + "chatRoom.html")
 })
+
+
 
 //user log out
 app.post('/logout_action', (req, res) => {
