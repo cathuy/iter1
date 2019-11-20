@@ -458,9 +458,14 @@ footer {
   height: 580px;
 }
 
-.page .fas.fa-user-secret.fa-3x {
+.page .fas.fa-user-secret.fa-3x.regular {
   width: 400px;
   height: 650px;
+}
+
+.page .fas.fa-user-secret.fa-3x.admin {
+  width: 400px;
+  height: 170px;
 }
 
 .page .fas.fa-user-circle.fa-3x {
