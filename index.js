@@ -196,7 +196,11 @@ app.post('/login_action', (req, res) => {
     params = JSON.parse(JSON.stringify(req.body))
     NAME = params['name']
     PASSWORD = params['password']
-    var getInfoQuery = `SELECT *FROM game_info WHERE "username" =  '${NAME}'`
+    var getInfoQuery =
+       `SELECT game_info.username, game_info.time, game_info.result, game_info.word, game_info.spy
+        FROM game_info,Admin
+        WHERE Admin.username=game_info.username AND game_info.username = '${NAME}' AND Admin.password = '${PASSWORD}'`
+
     var getWhole = `SELECT * FROM Admin`;
     if (NAME == 'carinaA' && PASSWORD == '123') {
         pool.query(getWhole, (error, result) => {
@@ -211,22 +215,27 @@ app.post('/login_action', (req, res) => {
     } else {
         pool.query(getInfoQuery, (error, result) => {
             if (error) {
-                console.log(`this user is not existed`)
-                response.send('Incorrect Username and/or Password!');
-                res.end(error);
+                console.log(error)
+                console.log(`wrong username and password`)
+                res.send("<script>alert('Incorrect Username and/or Password!');location.href='../#t4';</script>")
+                // response.send('Incorrect Username and/or Password!');
+                // res.end(error);
+            } else {
+                if(result.rowCount == 0) {
+                    console.log(result)
+                    console.log(`wrong username and password`)
+                    res.send("<script>alert('Incorrect Username and/or Password!');location.href='../#t4';</script>")
+                } else {
+                    console.log("this user is in our database");
+                    var results = { 'rows': result.rows };
+                    req.session.user = NAME;
+                    req.session.password = PASSWORD;
+                    res.render('pages/gamer_data', results)
+                }
             }
-            console.log("this user is in our database");
-            var Results //Admin
-            req.session.user = NAME;
-            req.session.password = PASSWORD;
-            var results = { 'rows': result.rows };
-            console.log(results)
-            res.render('pages/gamer_data', results)
-        });
-
+       });
     }
 });
-
 
 //user sign up
 app.post('/signup_action', (req, res) => {
