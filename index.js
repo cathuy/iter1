@@ -1,4 +1,4 @@
-const express = require('express')
+ const express = require('express')
 var randomWords = require('random-words');
 const app = express()
 const session = require('express-session');
@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
         socket.leave(socket.room);
         var user_idx = -1;
 
-        //Check if user room is lost. Common cause: Server restart. 
+        //Check if user room is lost. Common cause: Server restart.
         if (rooms[socket.room] != undefined) {
             for (var i = 0; i < rooms[socket.room].user_array.length; i++) {
                 if (rooms[socket.room].user_array[i][0] === socket.user) {
@@ -237,6 +237,7 @@ app.post('/login_action', (req, res) => {
     }
 });
 
+
 //user sign up
 app.post('/signup_action', (req, res) => {
     params = JSON.parse(JSON.stringify(req.body))
@@ -260,7 +261,7 @@ app.post('/signup_action', (req, res) => {
                 res.send("<script>alert('Please use another names!');location.href='../#t4';</script>")
 
             } else {
-                insertQuery2 = `INSERT INTO game_info("username","time","result","word","spy") 
+                insertQuery2 = `INSERT INTO game_info("username","time","result","word","spy")
                 VALUES('${NAME}','${TIME}',${RESULT},'${WORD}',${SPY})`
                 pool.query(insertQuery2, function(err, result, fields) {
                     if (err) {
@@ -313,7 +314,7 @@ app.post('/logout_action', (req, res) => {
 //         var count = 1;
 //         var rows = result.rows;
 //         rows.forEach((r)=> {
-//             r.numberofplay++;  
+//             r.numberofplay++;
 //             var privates = r.private;
 //             count++;
 //         });
