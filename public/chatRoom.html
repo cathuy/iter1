@@ -149,6 +149,13 @@
     var clickedOnShare = false; //share button is not clicked
     var AddThisPubID = "ra-5dd0449a0cd80efa";
     var AddThisJS = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dd0449a0cd80efa";
+   
+  var metaList = document.getElementsByTagName("meta");
+    for (var i = 0; i < metaList.length; i++) {
+      if (metaList[i].getAttribute("name") === "description") {
+        metaList[i].content = "this is your room number: " + myroom;
+      }
+    }
 
 function share(button) {
   if (navigator.share) {
