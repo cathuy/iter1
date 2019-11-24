@@ -109,6 +109,7 @@ io.on('connection', (socket) => {
             console.log("Probable Server Restart. Disconnecting user to reconnect. user: %s room: %s", socket.user, socket.room);
         }
     });
+    
     // adding user to room
     socket.on('addToRoom', function(roomName) {
         /*  Code:
@@ -120,7 +121,8 @@ io.on('connection', (socket) => {
         socket.room = roomName.room;
         socket.user = roomName.user;
 
-        var flag = 0; //NOTE: No race conditions observed now
+        // room is empty
+        var flag = 0; 
 
         for (var key in rooms) {
             if (key === socket.room) {
@@ -129,26 +131,69 @@ io.on('connection', (socket) => {
             }
         }
 
+        // room empty
         if (flag === 0) {
+
+            // starting a new room and new user array
             rooms[socket.room] = {
                 name: socket.room,
                 user_array: []
             }
             rooms[socket.room].user_array.push([socket.user]);
+
+            //Add socket to provided room
+            socket.join(socket.room);
+
+            //Send user_connect msg to other users in room.
+            io.sockets.in(socket.room).emit('user_connect', rooms[socket.room].user_array);
+
+            console.log(socket.user + " connected to room " + socket.room + ". Current users: " + rooms[socket.room].user_array.length);
+            console.log("New room started");
+            console.log("flag: " + flag);
+            
+
+        // room not empty
         } else {
-            rooms[socket.room].user_array.push([socket.user]);
+
+            // room full
+            if (rooms[socket.room].user_array.length >= 7) {
+                console.log("Invalid user: " + socket.user);
+                console.log("This room is full!");
+
+                // add socket to user array
+                rooms[socket.room].user_array.push([socket.user]);
+
+                //Add socket to provided room
+                socket.join(socket.room);
+
+                //Send user_connect msg to other users in room.
+                io.sockets.in(socket.room).emit('user_connect', rooms[socket.room].user_array);
+
+                // forcing current user to disconnect
+                io.sockets.to(socket.id).emit('force_disconnect');
+                
+            // room not full
+            } else {
+
+                // add socket to user array
+                rooms[socket.room].user_array.push([socket.user]);
+
+                //Add socket to provided room
+                socket.join(socket.room);
+
+                //Send user_connect msg to other users in room.
+                io.sockets.in(socket.room).emit('user_connect', rooms[socket.room].user_array);
+
+                console.log(socket.user + " connected to room " + socket.room + ". Current users: " + rooms[socket.room].user_array.length);
+                console.log(rooms[socket.room].user_array[0]);
+
+                // testing
+                console.log("Room not full: adding new player");
+                console.log("flag: " + flag);
+                
+
+            }   
         }
-
-        //Add socket to provided room
-        socket.join(socket.room);
-
-        //Send user_connect msg to other users in room.
-        io.sockets.in(socket.room).emit('user_connect', rooms[socket.room].user_array);
-
-        //Send the current user it's server socket.id to use as peerjs id. Ensures uniqueness on custom server.
-        // io.to(socket.id).emit('socket_id',socket.id);
-
-        console.log(socket.user + " connected.");
     });
 
     //Broadcast users message to its room.
@@ -163,14 +208,6 @@ io.on('connection', (socket) => {
     });
 
 });
-
-// socket.on('chat message', function(msg){
-//     var keys = Object.keys(socket.rooms);
-//     for (var i = 0; i < keys.length; i++) {
-//         io.to(socket.rooms[keys[i]]).emit('chat message', msg);
-//     }
-// });
-
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 //Get Room id from url
