@@ -1,5 +1,6 @@
  const express = require('express')
 var randomWords = require('random-words');
+var tcom = require('thesaurus-com')
 const app = express()
 const session = require('express-session');
 const path = require('path')
@@ -39,26 +40,10 @@ app.get('/', (req, res) => {
 
     } else {
         console.log('user not log in yet')
-        console.log(randomWords());
-
         res.render('pages/index')
     }
 });
-// app.get('/#t4', (req, res) => {
-//     if (req.session.user) {
-//         if (req.session.user == 'carinaA') {
-//             var getWhole = `SELECT * FROM Admin`;
-//             pool.query(getWhole, (error, result) => {
-//                 if (error)
-//                     res.end(error);
-//                 var results = { 'rows': result.rows };
-//                 console.log(results);
-//                 res.render('pages/admin_data', results)
-//             });
 
-//         }
-//     }
-// });
 const server = app.listen(PORT, () => {
     console.log("Listening on port: " + PORT);
 });
@@ -109,7 +94,10 @@ io.on('connection', (socket) => {
             console.log("Probable Server Restart. Disconnecting user to reconnect. user: %s room: %s", socket.user, socket.room);
         }
     });
-    
+
+
+
+    //io.to('${socket.user}').emit(word);
     // adding user to room
     socket.on('addToRoom', function(roomName) {
         /*  Code:
@@ -120,27 +108,22 @@ io.on('connection', (socket) => {
 
         socket.room = roomName.room;
         socket.user = roomName.user;
-
         // room is empty
-        var flag = 0; 
-
+        var flag = 0;
         for (var key in rooms) {
             if (key === socket.room) {
                 flag = 1;
                 break;
             }
         }
-
         // room empty
         if (flag === 0) {
-
             // starting a new room and new user array
             rooms[socket.room] = {
                 name: socket.room,
                 user_array: []
             }
             rooms[socket.room].user_array.push([socket.user]);
-
             //Add socket to provided room
             socket.join(socket.room);
 
@@ -150,11 +133,10 @@ io.on('connection', (socket) => {
             console.log(socket.user + " connected to room " + socket.room + ". Current users: " + rooms[socket.room].user_array.length);
             console.log("New room started");
             console.log("flag: " + flag);
-            
 
-        // room not empty
+
+            // room not empty
         } else {
-
             // room full
             if (rooms[socket.room].user_array.length >= 7) {
                 console.log("Invalid user: " + socket.user);
@@ -168,11 +150,11 @@ io.on('connection', (socket) => {
 
                 //Send user_connect msg to other users in room.
                 io.sockets.in(socket.room).emit('user_connect', rooms[socket.room].user_array);
-
                 // forcing current user to disconnect
                 io.sockets.to(socket.id).emit('force_disconnect');
-                
-            // room not full
+
+                // room not full
+
             } else {
 
                 // add socket to user array
@@ -186,14 +168,34 @@ io.on('connection', (socket) => {
 
                 console.log(socket.user + " connected to room " + socket.room + ". Current users: " + rooms[socket.room].user_array.length);
                 console.log(rooms[socket.room].user_array[0]);
-
                 // testing
                 console.log("Room not full: adding new player");
                 console.log("flag: " + flag);
-                
 
-            }   
+                //send keyword to specific user in room
+                if (rooms[socket.room].user_array.length == 7) {
+                    var word = randomWords()
+                    var synonym = tcom.search(word).synonyms[0]
+                        //var gamer = rooms[socket.room].user_array[0]
+                    io.sockets.to(socket.id).emit('getword', word)
+                    console.log(word)
+                        //console.log(gamer)
+                        // for (var iter = 1; iter < rooms[socket.room].user_array.length; iter++) {
+                        //     var other_gamer = rooms[socket.room].user_array[iter]
+                        //     console.log(other_gamer)
+                        //     io.sockets.to(other_gamer).emit('getword', synonym);
+                        // }
+                    socket.to(socket.room).emit('getword', synonym);
+                    console.log(synonym)
+
+                }
+
+
+            }
         }
+
+
+
     });
 
     //Broadcast users message to its room.
@@ -207,7 +209,11 @@ io.on('connection', (socket) => {
         console.log(socket.user + ": " + msg + ". From room# " + socket.room);
     });
 
+
 });
+
+
+
 
 setInterval(() => io.emit('time', new Date().toTimeString()), 1000);
 //Get Room id from url
@@ -234,7 +240,7 @@ app.post('/login_action', (req, res) => {
     NAME = params['name']
     PASSWORD = params['password']
     var getInfoQuery =
-       `SELECT game_info.username, game_info.time, game_info.result, game_info.word, game_info.spy
+        `SELECT game_info.username, game_info.time, game_info.result, game_info.word, game_info.spy
         FROM game_info,Admin
         WHERE Admin.username=game_info.username AND game_info.username = '${NAME}' AND Admin.password = '${PASSWORD}'`
 
@@ -255,10 +261,10 @@ app.post('/login_action', (req, res) => {
                 console.log(error)
                 console.log(`wrong username and password`)
                 res.send("<script>alert('Incorrect Username and/or Password!');location.href='../#t4';</script>")
-                // response.send('Incorrect Username and/or Password!');
-                // res.end(error);
+                    // response.send('Incorrect Username and/or Password!');
+                    // res.end(error);
             } else {
-                if(result.rowCount == 0) {
+                if (result.rowCount == 0) {
                     console.log(result)
                     console.log(`wrong username and password`)
                     res.send("<script>alert('Incorrect Username and/or Password!');location.href='../#t4';</script>")
@@ -270,7 +276,7 @@ app.post('/login_action', (req, res) => {
                     res.render('pages/gamer_data', results)
                 }
             }
-       });
+        });
     }
 });
 
@@ -333,43 +339,3 @@ app.post('/logout_action', (req, res) => {
     console.log("sucessful log out");
     res.render('pages/index');
 });
-
-
-//user enter room code to join an existing room
-// app.post('/join_room',(req,res) =>{
-//     params = JSON.parse(JSON.stringify(req.body))
-//     code = params['roomid']
-//     var getRoomQuery = `SELECT * FROM gameroom WHERE "roomid" =  ${code}`
-//     va
-//     pool.query(getRoomQuery, (error, result) => {
-//         if (error) {
-//             console.log(`the code is not exist`)
-//             response.send('Incorrect code!');
-//             res.end(error);
-//         }
-//         console.log("correctly code");
-//         var count = 1;
-//         var rows = result.rows;
-//         rows.forEach((r)=> {
-//             r.numberofplay++;
-//             var privates = r.private;
-//             count++;
-//         });
-//         var insertGamerQuery = `INSERT INTO gametable("roomid", "gamername","private", "numberofplayer")
-//         VALUES( ${code} , '${name}', ${privates} , ${count})`
-//         pool.query(insertGamerQuery, function(err, fields) {
-//             if (err) {
-//                 console.log("fail add to gamer table")
-//                 // res.redirect('/');
-//                 res.send(err)
-//             } else {
-//                 console.log("success to enter game room")
-//                 res.redirect('')
-//             }
-//         });
-//     } else { console.log("please enter password again") }
-
-//     });
-
-
-// });
