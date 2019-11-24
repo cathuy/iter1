@@ -54,7 +54,17 @@
           // room code from the url
           var parts = window.location.href.split("/");
           myroom = parts[parts.length - 1];
-          // myroom = myroom.slice(1);
+
+          function fullAlert() {
+            swal({
+              title: "This room is full!",
+              text: "Please create a new room or enter another room code!",
+              button: "Okay",
+            })
+            .then((value) => {
+              window.location = window.location.origin + "/#t3";
+            })
+          };
 
           function askName() {
             swal({
@@ -64,23 +74,23 @@
                 attributes: {
                   placeholder: "Type your name here",
                 },
-              },
+              }, 
             })
             .then((value) => {
               user = value;
               user = user.trim();
               user = user.replace(/\s\s+/g, ' ');
               console.log("The current user is " + value);
-
+  
               // show room code
-              $(".roomcode").html("<p>You are in room: <b><u>" + myroom + "</u></b><br>Share this room with button on the bottom right corner!</p>" );
-
+              $(".roomcode").html("<p>You are in room: <b><u>" + myroom + "</u></b><br>Share this room with the button on the bottom right corner!</p>" );
+  
               // welcome user
               $(".user_span").html("<p>Welcome, <b><u>" + user + "</u></b>!</p>" );
-
+              
               socket.emit('addToRoom',{'room':myroom, 'user':user});
-            })
-          }
+            })   
+          };
 
           askName();
 
@@ -88,9 +98,10 @@
 
           // Send current user details to the server when requested
           socket.on("giveuser",function(msg){
-            if(user!="" && myroom!="")
-              socket.emit('addToRoom',{'room':myroom, 'user':user});
+            if (user!="" && myroom!="") {
               console.log("Client " + user + " connected! Room# " + room);
+            }
+            // socket.emit('addToRoom',{'room':myroom, 'user':user});
           });
 
 
@@ -130,6 +141,13 @@
             }
           });
 
+          // force disconnect user if room is full
+          socket.on('force_disconnect', function() {
+            console.log("Connection error: This room is full");
+            // $(".user_list").html("This room is full!");
+            fullAlert();
+          });
+
           //Receive info of other user disconnecting.
           socket.on('user_disconnect', function(disconnected_user){
             //remove the disconnected user
@@ -145,7 +163,7 @@
 
 
     //share API
-   var AddThisJSLoaded = false; //AddThis not loaded yet
+    var AddThisJSLoaded = false; //AddThis not loaded yet
     var clickedOnShare = false; //share button is not clicked
     var AddThisPubID = "ra-5dd0449a0cd80efa";
     var AddThisJS = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dd0449a0cd80efa";
