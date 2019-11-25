@@ -148,6 +148,28 @@
           socket.on('getword', function(word) {
             $(".user_keyword").html("your word is: " + word);
         });
+		//timer
+          var timer = document.getElementById('timer');
+          var sendbutton = document.getElementById('send');
+          var timeleft = 30;
+          var timerId = setInterval(coundount, 1000);
+          var timeStart = 10;
+          function coundount(){
+            if(timeleft==0)
+            {
+              sendbutton.disabled = true;
+              if (timeStart==0) {
+                sendbutton.disabled=false;
+              }else {
+                timeStart--;
+                timer.innerHTML = timeStart + ' seconds to start';
+              }
+            }else {
+              timeleft--;
+              timer.innerHTML = timeleft + 'seconds remaining';
+            }
+          }
+
           // force disconnect user if room is full
           socket.on('force_disconnect', function() {
             console.log("Connection error: This room is full");
