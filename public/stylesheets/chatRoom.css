@@ -5,17 +5,54 @@
   box-sizing: border-box; }
 body
  { background-color: #000; font: 13px Helvetica, Arial; color:#fff; }
-form 
+.user_input 
 { background: #fff; padding: 3px; position: fixed; bottom: 0; width: 100%; border-color: #000; border-top-style: solid; border-top-width: 1px;}
-form input
+.user_input input
 { border-style: solid; border-width: 1px; padding: 10px; width: 85%; margin-right: .5%; }
 form button 
-{ width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; margin-left: 2%; }
+{ width: 9%; background: cornflowerblue; border: none; padding: 10px; margin-left: 2%; }
 #messages 
 { list-style-type: none; margin: 0; padding: 0; }
 #messages li 
 { padding: 5px 10px; }
 #messages li:nth-child(odd) { background: #eee; }
+
+.main {
+  margin: 10px;
+  padding: 5px;
+}
+
+/* #server-time, .roomcode, .user_list, .user_span { */
+ .display {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  margin: 15px;
+}
+
+#message_display {
+  font-size: 16px;
+  margin: 5px;
+}
+
+.user_keyword {
+  margin: 5px 5px 20px 5px;
+  font-size: 16px;
+  text-align: center;
+  padding: 4px;
+  background: cornflowerblue;
+}
+
+#timer_display {
+  text-align: center;
+  font-size: 16px;
+  margin-top: 8px;
+  color: rgb(250, 235, 215);
+  font-style: italic;
+  font-weight: lighter;
+}
+
+
 
 
 /* share API Reference from: https://www.youtube.com/watch?v=sMJZqLLp0Cc */
