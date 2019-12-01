@@ -53,7 +53,7 @@ const io = require('socket.io')(server);
 // store user data in variable room
 var rooms = []
 
-var minPlayer = 2;
+var minPlayer = 7;
 
 //Socket.io on connection event
 io.on('connection', (socket) => {
