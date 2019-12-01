@@ -57,6 +57,10 @@
 
        </div>
 
+      <form class="user_input" action="javascript:void(0)">
+          <input type="text" id="message_input" name="" value="" required autofocus><button id="message_send" onclick=clicked()>Send</button>
+      </form>
+
       <script>
           // Number of users online in current room
           var num_users =0;
@@ -192,13 +196,6 @@
           // force disconnect user if room is full
           socket.on('force_disconnect', function() {
             console.log("Connection error: This room is full");
-            fullAlert();
-          });
-
-          // force disconnect user if room is full
-          socket.on('force_disconnect', function() {
-            console.log("Connection error: This room is full");
-            // $(".user_list").html("This room is full!");
             fullAlert();
           });
 
