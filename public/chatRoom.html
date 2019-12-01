@@ -34,21 +34,28 @@
 
 
        <!-- chatRoom -->
-      <p id='server-time'></p>
-      <p class="roomcode"></p>
-      <br>
-      <p class='user_list'></p>
-      <br>
-       <br>
-      <p class='user_keyword'></p>
-      <br>
-      <p class='user_span'></p>
-      <p id='message_display'></p>
-<div id="timer"></div>
-<br>
-      <form class="" action="javascript:void(0)">
-        <input type="text" id="message_input" name="" value="" required autofocus><button id= "send">Send</button>
-      </form>
+       <div class="main">
+
+          <div class="display">
+            <p id='server-time'></p>
+            <br>
+            <p class="roomcode"></p>
+            <br>
+            <p class='user_list'></p>
+            <br>
+            <p class='user_span'></p>
+          </div>
+    
+          <div>
+            <p class='user_keyword'>When game starts, your word will appear here</p>
+          </div>
+          
+          <p id='message_display'></p>
+          <br>
+          <p id='timer_display'></p>
+          <br>
+
+       </div>
 
       <script>
           // Number of users online in current room
@@ -149,27 +156,44 @@
           socket.on('getword', function(word) {
             $(".user_keyword").html("your word is: " + word);
         });
-		//timer
-          var timer = document.getElementById('timer');
-          var sendbutton = document.getElementById('send');
-          var timeleft = 30;
-          var timerId = setInterval(coundount, 1000);
-          var timeStart = 10;
-          function coundount(){
-            if(timeleft==0)
-            {
-              sendbutton.disabled = true;
-              if (timeStart==0) {
-                sendbutton.disabled=false;
-              }else {
-                timeStart--;
-                timer.innerHTML = timeStart + ' seconds to start';
-              }
-            }else {
-              timeleft--;
-              timer.innerHTML = timeleft + 'seconds remaining';
-            }
-          }
+		// //timer
+    //       var timer = document.getElementById('timer');
+    //       var sendbutton = document.getElementById('send');
+    //       var timeleft = 30;
+    //       var timerId = setInterval(coundount, 1000);
+    //       var timeStart = 10;
+    //       function coundount(){
+    //         if(timeleft==0)
+    //         {
+    //           sendbutton.disabled = true;
+    //           if (timeStart==0) {
+    //             sendbutton.disabled=false;
+    //           }else {
+    //             timeStart--;
+    //             timer.innerHTML = timeStart + ' seconds to start';
+    //           }
+    //         }else {
+    //           timeleft--;
+    //           timer.innerHTML = timeleft + 'seconds remaining';
+    //         }
+    //       }
+
+          // making system announcement
+          socket.on('system-announcement', function(msg){
+            dis.innerHTML += "SYSTEM: " + msg + "<br>";
+          });
+
+          // disable all user from inputing
+          socket.on('disable-all', function(){
+            document.getElementById("message_input").disabled = true;
+            document.getElementById("message_send").disabled = true;
+          });
+
+          // force disconnect user if room is full
+          socket.on('force_disconnect', function() {
+            console.log("Connection error: This room is full");
+            fullAlert();
+          });
 
           // force disconnect user if room is full
           socket.on('force_disconnect', function() {
@@ -188,6 +212,34 @@
               $(".user_list").html("1 person online in this room");
             } else {
               $(".user_list").html(num_users + " people online in this room");
+            }
+          });
+
+          // start game functions
+          
+          var buttonClicked = false;
+
+          // if user already sent message, disable 
+          function clicked() {
+            buttonClicked = true;
+          }
+
+          socket.on('countdownInput', function(timeLeft) {
+
+            document.getElementById("message_input").disabled = false;
+            document.getElementById("message_send").disabled = false;
+            
+            // timesUp or message already sent
+            if (timeLeft == 0 || buttonClicked) {
+              document.getElementById("message_input").disabled = true;
+                document.getElementById("message_send").disabled = true;
+                cd.innerHTML = "Good job! You've done typing.<br>";
+                setInterval(function(){
+                  cd.style.display = "none";
+                }, 3000);
+                // buttonClicked = false;
+            } else {
+              cd.innerHTML = "SYSTEM: It's your time to describe your word. You have " + timeLeft + " seconds remaining... <br>";
             }
           });
 
