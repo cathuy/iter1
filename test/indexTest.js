@@ -65,6 +65,7 @@ it('test', function(done) {
             data.index.password.should.eql(request.body.enter_password_again);
             done()
         });
+      done();
     });
     //this.controller.handle(request, response)
   //  done()
