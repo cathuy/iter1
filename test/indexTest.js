@@ -71,21 +71,6 @@ it('test', function(done) {
   //  done()
 
 
-
-  before(function(){
-    mockery.enable({
-      warnOnUnregistered: false
-    });
-
-    mockery.registerMock('../index',{
-      all: (cb)=> cb(null, ['name','password']),
-      create: (name, password, cb)=>cb(null,{name: name, password: password })
-    });
-    this.controller = require('../index')
-  });
-  after(function (){
-    mockery.disable()
-  });
   it('login',function () {
     var response = buildResponse();
     var request = http_mocks.createRequest({
