@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CHAT ROOM</title>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width = device-width,initial-scale = 1.0">
+  <meta name="description" content="This is your room number">
+
+  <link rel="stylesheet" href="/stylesheets/chatRoom.css" type="text/css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+ 
+  <script src="/javascripts/main.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+
+<body>
+
+  <!-- share API Reference from: https://www.youtube.com/watch?v=sMJZqLLp0Cc-->
+  <button id="shareButton" onclick="share(this)">
+    <i class="fas fa-share-alt"></i>
+    <i class="fas fa-times"></i>
+    <div class="container">
+      <div class="addthis_inline_share_toolbox"></div>
+      <!--for old users of AddThis-->
+      <div class="addthis_sharing_toolbox"></div>
+    </div>
+  </button>
+
+ <!-- chatRoom
+  <p id='server-time'></p>
+  <p class="roomcode"></p><br>
+  <p class='user_list'></p><br><br>
+  <p class='user_keyword'></p><br>
+  <p class='user_span'></p>
+  <p id='message_in'></p>
+  <p id='message_out'></p> -->
+
+  <div class="main">
+    
+    <div class="display">
+      <p id='server-time'></p><br>
+      <p class="roomcode"></p><br>
+      <p class='user_list'></p><br>
+      <p class='user_span'></p>
+    </div>
+    
+    <div>
+      <p class='user_keyword'>When game starts, your word will appear here</p>
+    </div>
+    
+    <p id='message_display'></p><br>
+    <p id='message_in'></p><br>
+    <p id='message_out'></p><br>
+    <p id='timer_display'></p><br>
+  </div>
+  
+      <form class="user_input" action="javascript:void(0)">
+        <input type="text" id="message_input" name="" value="" required autofocus><button id="message_send" onclick=clicked()>Send</button>
+      </form>
+
+  <script>
+    // Number of users online in current room
+    var num_users = 0;
+    var usertypingtimer = null;
+
+    // room code from the url
+    var parts = window.location.href.split("/");
+    myroom = parts[parts.length - 1];
+
+    function fullAlert() {
+      swal({
+        className: 'swal-full',
+        title: "This room is full!",
+        text: "Please create a new room or enter another room code!",
+        button: "Okay",
+      })
+      .then((value) => {
+        window.location = window.location.origin + "/#t3";
+      })
+    };
+
+    function askName() {
+      swal({
+        // className: EnterRoom,
+        className: 'swal-askName',
+        content: {
+          element: "input",
+          attributes: {
+            placeholder: "Type your name here",
+          },
+        }, 
+      })
+      .then((value) => {
+        user = value;
+        user = user.trim();
+        user = user.replace(/\s\s+/g, ' ');
+        console.log("The current user is " + value);
+
+        // show room code
+        $(".roomcode").html("<p>You are in room: <b><u>" + myroom + "</u></b><br>Share this room with the button on the bottom right corner!</p>" );
+
+        // welcome user
+        $(".user_span").html("<p>Welcome, <b><u>" + user + "</u></b>!</p>" );
+
+        socket.emit('addToRoom',{'room':myroom, 'user':user});
+      })    
+    };
+
+    askName();
+
+    var socket = io();
+
+    // Send current user details to the server when requested
+    socket.on("giveuser",function(msg){
+      if (user!="" && myroom!="") {
+        console.log("Client " + user + " connected! Room# " + room);
+      }
+      // socket.emit('addToRoom',{'room':myroom, 'user':user});
+    });
+
+    var el = document.getElementById('server-time');
+    var dis = document.getElementById('message_display')
+    var input = document.getElementById('message_in');
+    var output = document.getElementById('message_out');
+    var cd = document.getElementById('timer_display');
+
+    // display current time
+    socket.on('time',function(timeString){
+      el.innerHTML='Server time: '+ timeString;
+    });
+
+    // receive messages from other users in the room
+    socket.on("chat", function(msg){
+      if(user!=msg.user)
+        input.innerHTML += msg.user + ": " + msg.msg + "<br>";
+      else
+        output.innerHTML += msg.user + ": " + msg.msg + "<br>";
+      });
+
+    // handler for chat sending
+    document.forms[0].onsubmit=function(){
+      var input=document.getElementById("message_input");
+      var msg=input.value;
+      socket.emit("chat",msg);
+      input.value='';
+    }
+
+    //Receive info of other users connecting in the room
+    socket.on('user_connect', function(users_array){
+
+      $(".user_list").empty();
+
+      user_online_array = users_array;
+      num_users=user_online_array.length;
+
+      if(num_users ===1) {
+        $(".user_list").html("1 person online in this room");
+      } else {
+        $(".user_list").html(num_users + " people online in this room");
+      }
+    });
+
+    // server assign keyword to each gamer in each game room(six people get same word in a room the one left get synonmy)
+    socket.on('getword', function(word) {
+      $(".user_keyword").html("your word is: " + word);
+    });
+
+    // making system announcement
+    socket.on('system-announcement', function(msg) {
+      dis.innerHTML += "SYSTEM: " + msg + "<br>";
+    });
+
+    // disable all user from inputing
+    socket.on('disable-all', function(){
+      document.getElementById("message_input").disabled = true;
+      document.getElementById("message_send").disabled = true;
+    });
+
+    // force disconnect user if room is full
+    socket.on('force_disconnect', function() {
+      console.log("Connection error: This room is full");
+      // $(".user_list").html("This room is full!");
+      fullAlert();
+    });
+
+    //Receive info of other user disconnecting.
+    socket.on('user_disconnect', function(disconnected_user){
+      //remove the disconnected user
+      // $('.rm_'+disconnected_user+'_div').remove();
+      num_users--;
+      if(num_users ===1) {
+        $(".user_list").html("1 person online in this room");
+      } else {
+        $(".user_list").html(num_users + " people online in this room");
+      }
+    });
+
+    socket.on('startVote', (data) => {
+      if(data.flag == 1) {
+        document.getElementById("buttonAppear").innerHTML = '<button id="logoutbutton">voting</button>';
+      }
+    })
+
+    socket.on('loserMesg', (data) => {
+      input.innerHTML = "SYSTEM: " + data + "is kicked out from this room" + "<br>";
+      document.getElementById('logoutbutton').setAttribute("style","visibility:hidden");
+    })
+
+    // start game functions
+        
+    var buttonClicked = false;
+    var currentPlayerDone = false;
+
+    // if user already sent message, disable 
+    function clicked() {
+      buttonClicked = true;
+    }
+
+    socket.on('countdownInput', function(timeLeft) {
+
+      document.getElementById("message_input").disabled = false;
+      document.getElementById("message_send").disabled = false;
+      
+      // timesUp or message already sent
+      if (timeLeft == 0 || buttonClicked) {
+        document.getElementById("message_input").disabled = true;
+        document.getElementById("message_send").disabled = true;
+        cd.innerHTML = "Good job! You've done typing.<br>";
+        setInterval(function(){
+          cd.style.display = "none";
+        }, 3000);
+        currentPlayerDone = true;
+        // socket.emit('currentPlayerDoneDescribe', currentPlayerDone);
+        
+      } else {
+        cd.innerHTML = "SYSTEM: It's your time to describe your word. You have " + timeLeft + " seconds remaining... <br>";
+      }
+    });
+
+    //share API
+    var AddThisJSLoaded = false; //AddThis not loaded yet
+    var clickedOnShare = false; //share button is not clicked
+    var AddThisPubID = "ra-5dd0449a0cd80efa";
+    var AddThisJS = "//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5dd0449a0cd80efa";
+
+    var metaList = document.getElementsByTagName("meta");
+    for (var i = 0; i < metaList.length; i++) {
+      if (metaList[i].getAttribute("name") === "description") {
+        metaList[i].content = "this is your room number: " + myroom;
+      }
+    }
+
+    function share(button) {
+      if (navigator.share) {
+        //check if Web Share API is supported by the browser
+        //var url = document.location.href;
+        var title = document.getElementsByTagName("title")[0].innerHTML;
+        var description = document
+        .querySelector("meta[name=description]")
+        .getAttribute("content");
+        navigator.share({
+          title: title,
+          text: description,
+          url:"https://stark-chamber-06109.herokuapp.com/#t4",
+        });
+      } else {
+        if (!AddThisJSLoaded && !clickedOnShare) {
+          //when AddThis not loaded and share button isn't clicked
+          clickedOnShare = true; //share button is clicked
+          showLoading(button);
+          shareByAddThis(button);
+        } else {
+          toggleAddThisButtons(button);
+        }
+      }
+    }
+
+    function shareByAddThis(button) {
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = AddThisJS;
+
+      script.onload = function() {
+        clickedOnShare = false; //AddThis JS is loaded
+        addthis.user.ready(function(data) {
+          AddThisJSLoaded = true; //AddThis loaded and ready to use
+          hideLoading(button);
+          showAddThisButtons(button);
+        });
+      };
+
+      script.onerror = function() {
+        clickedOnShare = false; //AddThis JS failed to load
+        hideLoading(button);
+      };
+
+      document.body.appendChild(script);
+    }
+
+    function showLoading(button) {
+      button.classList.add("loading");
+    }
+
+    function hideLoading(button) {
+      button.classList.remove("loading");
+    }
+
+    function showAddThisButtons(button) {
+      button.classList.add("showAddThisButtons");
+    }
+
+    function toggleAddThisButtons(button) {
+      button.classList.toggle("showAddThisButtons");
+    }
+
+  </script>
+
+  <!-- <form action="/logout_action" method="POST">
+    <button id="logoutbutton">Log out</button>
+  </form> -->
+
+  <form action="/voting" method="POST" target="_blank">
+    <!-- <button id="logoutbutton">voting</button> -->
+    <span id="buttonAppear"></span>
+  </form>
+
+</body>
+
+</html>
