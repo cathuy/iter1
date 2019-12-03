@@ -4,13 +4,13 @@
   padding: 0; 
   box-sizing: border-box; }
 body
- { background-color: #000; font: 13px Helvetica, Arial; color:#fff; }
+ { background-color: #1f1b24; font: 13px Helvetica, Arial; color:#fff; }
 .user_input 
-{ background: #fff; padding: 3px; position: fixed; bottom: 0; width: 100%; border-color: #000; border-top-style: solid; border-top-width: 1px;}
+{ background: #fff; padding: 3px; position: fixed; bottom: 0; width: 100%; border-color: #1f1b24; border-top-style: solid; border-top-width: 1px;}
 .user_input input
 { border-style: solid; border-width: 1px; padding: 10px; width: 85%; margin-right: .5%; }
 form button 
-{ width: 9%; background: cornflowerblue; border: none; padding: 10px; margin-left: 2%; }
+{ width: 9%; background: #413a4b; border: none; padding: 10px; margin-left: 2%; }
 #messages 
 { list-style-type: none; margin: 0; padding: 0; }
 #messages li 
@@ -35,18 +35,34 @@ form button
   margin: 5px;
 }
 
+#message_in {
+  font-size: 16px;
+  margin: 5px;
+}
+
+#message_out {
+  display: block;
+  float: right;
+  font-size: 16px;
+  margin: 5px;
+}
+
 .user_keyword {
   margin: 5px 5px 20px 5px;
   font-size: 16px;
   text-align: center;
   padding: 4px;
-  background: cornflowerblue;
+  background: #413a4b;
 }
 
 #timer_display {
+  bottom: 30%;
+  position: fixed;
   text-align: center;
   font-size: 16px;
   margin-top: 8px;
+  margin-left: 5px;
+  padding-left: 2px;
   color: rgb(250, 235, 215);
   font-style: italic;
   font-weight: lighter;
@@ -181,3 +197,44 @@ form button
 }
 
  
+/* styles for alert boxes */
+
+.swal-askName, .swal-full {
+  width: 350px;
+  background-color: #1f1b24;
+}
+
+.swal-overlay, .swal-alert {
+  background-color: rgba(12, 11, 14, 0.85);
+}
+
+.swal-text {
+  color: #fff;
+}
+
+.swal-title {
+  font-size: 18px;
+  color: #fff;
+}
+
+/* button for password mismatch alert */
+.swal-button {
+  /* display: flex;
+  -webkit-justify-content: center;
+          justify-content: center; */
+  padding: 7px 19px;
+  border-radius: 2px;
+  background-color: #413a4b;
+  font-size: 12px;
+  border: 0;
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+}
+
+.swal-button:hover {
+  background-color: #cacaca !important;
+  color: #1f1b24;
+}
+
+.swal-footer {
+  text-align: center;
+}
