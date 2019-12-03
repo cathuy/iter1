@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Voting</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var voteArray = [];
+      var nameArray = [];
+      var totalCount = 0;
+    </script>
+</head>
+<body>
+
+  <center style="color:black">
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Vote</th>
+      </tr>
+      <% rows.forEach((r) => { %>
+    
+      <tr>
+        <td>
+          <%= r.name %>
+        </td>
+        <td>
+          <p id="<%= r.name %>">
+            <%= r.vote %> 
+          </p>
+        </td>
+        <script>
+          voteArray.push("<%= r.vote %>")
+          nameArray.push("<%= r.name %>")
+        </script>
+        <td>
+          <button onclick="addVoting('<%= r.name %>')" id="vote_<%= r.name %>">Vote</button>
+          <script>
+            var socket=io.connect()
+            socket.on("receiveData",(data)=>{
+              voteArray[data.index]=data.value;
+              // console.log(voteArray[data.index])
+            });
+            var voteSend=document.getElementById("vote_<%= r.name %>");
+            voteSend.addEventListener("click",function() {
+              var data
+              for( var i=0;i<nameArray.length;i++)
+              if("<%= r.name %>" == nameArray[i]) {
+                data = {index:i, value:voteArray[i]}
+                break;
+              }
+              socket.emit("vote", data);
+            });  
+          </script>
+        </td><br><br>
+        <script>
+          function addVoting(gamer) {
+            for(var i = 0; i < nameArray.length; i++) {
+              if(nameArray[i] == gamer){
+                document.getElementById(gamer).innerHTML = parseInt(++voteArray[i]);
+                // document.getElementById("vote_"+gamer).disabled = true;
+                // console.log("vote_"+gamer);
+              }
+            }
+            for(var i = 0; i < nameArray.length; i++) {
+              document.getElementById("vote_"+nameArray[i]).disabled = true;
+            }
+          }
+        </script>
+      </tr>
+      <% }); %>
+    </table><br>
+
+    <!-- <form action="delete_user" method="POST"> -->
+      <button id="submit" onclick="check()">submit</button>
+    <!-- </form> -->
+
+    <script>
+      function check() {
+        if(totalCount < voteArray.length) {
+          for(var i = 0; i < voteArray.length; i++) { 
+            totalCount += parseInt(voteArray[i])
+            console.log(totalCount)
+          }
+        }
+        if(totalCount === voteArray.length) {
+          for(var i=0, j=i+1; j<voteArray.length; j++) {
+            if(voteArray[i] < voteArray[j]) {
+              i = j
+            }
+          }
+          data = {name: nameArray[i]}
+          socket.emit("delete", data)
+        }
+        window.close()
+      }
+    </script>
+
+  </center>
+
+</body>
+</html>
+
+
+ 
